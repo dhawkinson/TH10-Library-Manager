@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <title>A Brief History of Time</title>
+                <link rel="stylesheet" href="stylesheets/style.css">
+        </head>
+        <nav>       <!--    Begin Nav   -->
+                <ul>
+                        <li><a href="all_books.html">Books</a></li>
+                        <li><a href="all_patrons.html">Patrons</a></li>
+                        <li><a href="all_loans.html">Loans</a></li>
+                </ul>
+        </nav>       <!--    End Nav   -->
+
+        <body>
+            <h1>Book: A Brief History of Time</h1>
+            <form>       <!--    Begin Book Detail Form   -->
+                    <p>
+                             <label for="title">Title</label>
+                             <input id="title" type="text" value="A Brief History of Time">
+                    </p>
+                    <p>
+                            <label for="author">Author</label>
+                            <input id="author" type="text" value="Stephen Hawking">
+                    </p>
+                    <p>
+                            <label for="genre">Genre</label>
+                            <input id="genre" type="text" value="Non Fiction">
+                    </p>
+                    <p>
+                            <label for="first_published">First Published</label>
+                            <input id="first_published" type="text" value="1988">
+                    </p>
+                    <p>
+                            <input type="submit" value="Update">
+                    </p>
+            </form>       <!--    End Book Detail Form   -->
+            <h2>Loan History</h2>
+            <table>       <!--    Begin Book History Table   -->
+                    <thead>      <!--    Begin Book History Table Head   -->
+                            <tr>
+                                    <th>Book</th>
+                                    <th>Patron </th>
+                                    <th>Loaned on</th>
+                                    <th>Return by </th>
+                                    <th>Returned on</th>
+                                    <th>Action</th>
+                            </tr>
+                    </thead>     <!--    End Book History Table Head   -->
+                    <tbody>     <!--    Begin Book History Table Body   -->
+                            <tr>
+                                    <td><a href="book_detail.html">A Brief History of Time</a></td>
+                                    <td><a href="patron_detail.html">Andrew Chalkley</a></td>
+                                    <td>2015-12-12</td>
+                                    <td>2015-12-19</td>
+                                    <td></td>
+                                    <td><a href="return_book.html" class="button">Return Book</a></td>
+                            </tr>
+                    </tbody>     <!--    End Book History Table Body   -->
+            </table>      <!--    End Book History Table   -->
+        </body>
+</html>
