@@ -1,0 +1,16 @@
+extends ./layout
+block main
+    if subject === 'books'
+        include ./includes/_search
+    include ./includes/_filters
+    table
+        include ./includes/_table_headers
+        tbody
+            if subject === "loans"
+                include ./includes/_loan_table
+            if subject === "books"
+                include ./includes/_book_table
+            if subject === "patrons"
+                include ./includes/_patron_table
+    if subject === "books" || subject === "loans"
+        include ./includes/_pagination

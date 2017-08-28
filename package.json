@@ -4,7 +4,7 @@
   "description": "A Library Management App including: sqlite3 db, the Sequelize ORM and the Express framework",
   "author": "Doug (theHawk) Hawkinson",
   "license": "MIT",
-  "main": "./bin/www",
+  "main": "bin/www",
   "scripts": {
     "start": "node bin/www"
   },

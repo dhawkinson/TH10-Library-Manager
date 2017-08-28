@@ -1,7 +1,13 @@
-doctype html
+doctype
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+    //  head - links and metadata
+    include includes/_head.pug
+    body
+        //  navigation
+        include ./includes/_nav
+        // all other body content
+        block main
+
+
+        script(src="https://code.jquery.com/jquery-3.2.1.min.js")
+        script(src='/static/scripts/custom.js')

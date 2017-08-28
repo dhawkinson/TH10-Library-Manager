@@ -1,6 +1,9 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Play', sans-serif;
+  font-size: 14px;
+  background: url(../images/library.jpg) no-repeat fixed center;
+  background-size: cover;
 }
 
 a {
