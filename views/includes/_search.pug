@@ -1,0 +1,7 @@
+form.search-form(action=`/${ content }?search=true`, method='post')
+    for column in columns
+        p
+            label(for=`${ column.split(' ').join('_').toLowerCase() }`)= column  
+            input(type='text', name=`${ column.split(' ').join('_').toLowerCase() }`)
+
+    input(type='submit', value='Search')

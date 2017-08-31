@@ -6,10 +6,10 @@
     const express    = require('express');
     const router     = express.Router();
     
+    //  home route
     router.get('/', function(req, res, next) {
-        res.render('home');       // GET & Render home page
+        res.render('home');       // GET & Render home page (home.pug)
     });
     
     module.exports = router;
 }());
-

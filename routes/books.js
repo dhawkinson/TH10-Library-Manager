@@ -10,7 +10,7 @@
     const Loan       = require('../models').Loan;
     const Patron     = require('../models').Patron;
 
-    const subject    = 'books';
+    const subjArea   = 'books';
     const today      = moment().format('YYYY[-]MM[-]DD');
 
     let detail;
@@ -134,7 +134,7 @@
                 bookData,
                 columns,
                 title,
-                subject,
+                subjArea,
                 search_title,
                 author,
                 genre,
@@ -178,7 +178,7 @@
 
         router.get('/new', (req, res, next) => {
             const title = 'New Book';
-            res.render('new', { title, book: {}, subject });
+            res.render('new', { title, book: {}, subjArea });
         });
 
         router.post('/new', (req, res, next) => {
@@ -195,7 +195,7 @@
 
                     const errors = error.errors;
 
-                    res.render('new', { detail, book: bookData, errors, title: 'New Book', subject });
+                    res.render('new', { detail, book: bookData, errors, title: 'New Book', subjArea });
                 }
             }).catch(error => {
                 res.status(500).send(error);
@@ -340,7 +340,7 @@
 
                 const title = `Book: ${ book.title }`;
 
-                res.render('detail', { subject, detail, title, book, columns, loanedBooks });
+                res.render('detail', { subjArea, detail, title, book, columns, loanedBooks });
 
             }).catch(error => {
                 res.status(500).send(error);
@@ -407,7 +407,7 @@
                         "Returned On"
                     ];
 
-                    res.render('detail', { detail, columns, loanedBooks, book, errors: error.errors, title, subject });
+                    res.render('detail', { detail, columns, loanedBooks, book, errors: error.errors, title, subjArea });
                 } else {
                     throw error;
                 }

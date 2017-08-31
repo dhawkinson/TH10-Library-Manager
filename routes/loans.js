@@ -9,7 +9,7 @@
     const Loan          = require('../models').Loan;
     const Patron        = require('../models').Patron;
     
-    const subject       = 'loans';
+    const subjArea      = 'loans';
     
     const today         = moment().format('YYYY[-]MM[-]DD');
     const weekFromToday = moment().add(7, 'days').format('YYYY[-]MM[-]DD');
@@ -139,7 +139,7 @@
     
             const title = "Loans";
     
-            res.render('all', { loanedBooks, count, filter, currPage, columns, title, subject });
+            res.render('all', { loanedBooks, count, filter, currPage, columns, title, subjArea });
         });
     });
     
@@ -177,7 +177,7 @@
             const loanedOn = today;
             const returnBy = weekFromToday;
     
-            res.render('new', { subject, books, patrons, today, weekFromToday });
+            res.render('new', { subjArea, books, patrons, today, weekFromToday });
         });
     });
     
@@ -225,13 +225,13 @@
             }
     
             if (errors.length) {
-                res.render('new', { today, weekFromToday, books, patrons, errors, title: 'New Loan', subject });
+                res.render('new', { today, weekFromToday, books, patrons, errors, title: 'New Loan', subjArea });
             } else {
                 Loan.create(req.body).then(() => {
                     res.redirect('/loans');
                 }).catch(error => {
                     if (error.name === 'SequelizeValidationError') {
-                        res.render('new', { today, weekFromToday, books, patrons, errors: error.errors, title: 'New Loan', subject });
+                        res.render('new', { today, weekFromToday, books, patrons, errors: error.errors, title: 'New Loan', subjArea });
                     }
                 }).catch(error => {
                     res.status(500).send(error);

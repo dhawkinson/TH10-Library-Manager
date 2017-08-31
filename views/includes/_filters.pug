@@ -1,0 +1,11 @@
+- let item = `${content.charAt(0).toUpperCase()}${content.slice(1, content.length - 1)}`;
+
+h1= title  
+a.button(href=`/${content}/new`) Create New #{item} 
+if content !== 'patrons'
+    p Filters 
+        a(href=`/${content}?page=1`) All | 
+        a(href=`/${content}?page=1&filter=overdue`) Overdue | 
+        a(href=`/${content}?page=1&filter=checked_out`) Checked Out
+else
+    p 

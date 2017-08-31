@@ -35,15 +35,15 @@ The library.db file should contain 3 tables. Create a Sequelize model for a book
 ##Home Screen: 
 
 As a librarian, I should have a home screen so I can access functionality easily with a single click. See home.html for an example. The home screen should include links to all of the following pages:
-*  [ ] Books:
+*  [X] Books:
   * New Book
   * List All
   * List Overdue
   * List Checked Out
-*  [ ] Patrons:
+*  [X] Patrons:
   * New Patron
   * List All
-*  [ ] Loans
+*  [X] Loans
   * New Loan
   * List All
   * List Overdue

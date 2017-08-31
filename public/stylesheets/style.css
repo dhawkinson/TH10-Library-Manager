@@ -1,11 +1,58 @@
 body {
-  padding: 50px;
-  font-family: 'Play', sans-serif;
-  font-size: 14px;
-  background: url(../images/library.jpg) no-repeat fixed center;
-  background-size: cover;
+    padding: 50px;
+    font-family: 'Play', sans-serif;
+    /*/font-family: 'Noticia Text', serif;*/
+    font-size: 14px;
+    font-size: .75em;
+    /*background: url(../images/library.jpg) no-repeat fixed center;
+    background-size: cover;*/
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    background-color: #B5B5B5;
+    opacity: .25;
+    width: 100%;
+    z-index: -1;
+
+}
+.img-librarian {
+    max-height: 50px;
+    max-width: 50px;
+    display: block;
+    padding-top: 2.5em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.app-title {
+    text-align: center;
+}
+
+#header .table {
+	display: table;   /* Allow the centering to work */
+	margin: 0 auto;
+}
+
+ul.navbar-library {
+	list-style: none;
+}
+
+ul.navbar-library li {
+    display: inline;
+}
+
+div[class*='nav-'], button {
+    width: 50px;
+    background-color: white;
+    font-size: smaller;
+    text-align: center;
+    border-radius: 3px;
 }
 
 a {
-  color: #00B7FF;
+    color: #0065A4;
+    text-decoration: none;
+    font-weight: bold;
 }

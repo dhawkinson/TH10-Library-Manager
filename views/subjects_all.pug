@@ -1,16 +1,17 @@
 extends ./layout
-block main
-    if subject === 'books'
+
+block page
+    if subjArea === 'books'
         include ./includes/_search
     include ./includes/_filters
     table
         include ./includes/_table_headers
         tbody
-            if subject === "loans"
+            if subjArea === "loans"
                 include ./includes/_loan_table
-            if subject === "books"
+            if subjArea === "books"
                 include ./includes/_book_table
-            if subject === "patrons"
+            if subjArea === "patrons"
                 include ./includes/_patron_table
-    if subject === "books" || subject === "loans"
+    if subjArea === "books" || subjArea === "loans"
         include ./includes/_pagination

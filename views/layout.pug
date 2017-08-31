@@ -1,13 +1,8 @@
 doctype
 html
     //  head - links and metadata
-    include includes/_head.pug
+    include includes/_app_head.pug
     body
-        //  navigation
-        include ./includes/_nav
-        // all other body content
-        block main
+        // all body content
+        block page
 
-
-        script(src="https://code.jquery.com/jquery-3.2.1.min.js")
-        script(src='/static/scripts/custom.js')

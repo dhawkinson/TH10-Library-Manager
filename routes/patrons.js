@@ -2,13 +2,13 @@
 (function () {
 	// ... all vars and functions are in this scope only
     // still maintains access to all globals
-    const express = require('express');
-    const router = express.Router();
-    const Patron = require('../models').Patron;
-    const Loan = require('../models').Loan;
-    const Book = require('../models').Book;
+    const express   = require('express');
+    const router    = express.Router();
+    const Patron    = require('../models').Patron;
+    const Loan      = require('../models').Loan;
+    const Book      = require('../models').Book;
     
-    const subject = 'patrons';
+    const subjArea  = 'patrons';
     
     //  GET the patrons page && perform the available functions as needed   
     router.get('/', (req, res, next) => {
@@ -36,12 +36,12 @@
     
             const title = 'Patrons';
     
-            res.render('all', { patronData, columns, title, subject });
+            res.render('all', { patronData, columns, title, subjArea });
         });
     });
     
     router.get('/new', (req, res, next) => {
-        res.render('new', { subject, patronDetails: {} });
+        res.render('new', { subjArea, patronDetails: {} });
     });
     
     router.post('/new', (req, res, next) => {
@@ -55,7 +55,7 @@
                     plain: true
                 });
     
-                res.render('new', { patronDetails: patronData, errors: error.errors, title: 'New Patron', subject });
+                res.render('new', { patronDetails: patronData, errors: error.errors, title: 'New Patron', subjArea });
             } else {
                 throw error;
             }
@@ -111,7 +111,7 @@
             res.render('detail', {
                 detail,
                 patronDetails,
-                subject,
+                subjArea,
                 title,
                 columns,
                 loanedBooks: patronDetails.Loans
@@ -164,12 +164,12 @@
     
                 if (error.name === "SequelizeValidationError") {
     
-                    res.render('detail', { detail, columns, patronDetails, title, loanedBooks: patronDetails.Loans, errors: error.errors, subject });
+                    res.render('detail', { detail, columns, patronDetails, title, loanedBooks: patronDetails.Loans, errors: error.errors, subjArea });
                 } else {
                     throw error;
                 }
             }).catch(error => {
-                res.status(500).send(error);
+                res.status(500).send(error);ExtensionScriptApis
             });
         });
     });
