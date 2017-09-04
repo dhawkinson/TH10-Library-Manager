@@ -1,19 +1,7 @@
+// home page
 extends layout
 
-block page
-    .header
-        .brand
-            img.img-librarian(src='/static/images/librarian.png', alt='librarian')
-        .app-title
-            h2 Welcome to Library Manager
-        .table
-            ul.navbar-library
-                li.nav-books
-                    a(href='#books?page=1')
-                        button(type='button') Books
-                li.nav-patrons
-                    a(href='#patrons?page=1')
-                        button(type='button') Patrons
-                li.nav-loans
-                    a(href='#loans?page=1')
-                        button(type='button') Loans
+block content
+    .container
+
+    footer#action

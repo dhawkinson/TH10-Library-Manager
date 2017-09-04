@@ -1,11 +1,11 @@
-.head-loan
-    h2 Loans
-    ul.navbar-loan
-        li
-            a(href="/loans/new") New/Update Loan
-        li
-            a(href="/loans?page=1") List All
-        li
-            a(href="/loans?page=1&filter=overdue") List Overdue
-        li
-            a(href="/loans?page=1&filter=checked_out") List Checked Out
+#loans
+    .header
+        .head-title
+            h2 Loans
+        nav#navbar-loans
+            a.nav-loan-update(href='#loan-form?page=1') 
+                button(type='button') Update
+            a.nav-loan-list-all(href='#loan-list-all?page=1')  
+                button(type='button') List All
+            a.nav-loan-list-overdue(href='#loan-list-overdue?page=1')  
+                button(type='button') Overdue

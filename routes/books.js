@@ -2,16 +2,16 @@
 (function () {      //  use module pattern
     // ... all vars and functions are in this scope only
     // still maintains access to all globals
-    const express    = require('express');
-    const router     = express.Router();
-    const moment     = require('moment');
+    const express   = require('express');
+    const router    = express.Router();
+    const moment    = require('moment');
 
-    const Book       = require('../models').Book;
-    const Loan       = require('../models').Loan;
-    const Patron     = require('../models').Patron;
+    const Book      = require('../models').Book;
+    const Loan      = require('../models').Loan;
+    const Patron    = require('../models').Patron;
 
-    const subjArea   = 'books';
-    const today      = moment().format('YYYY[-]MM[-]DD');
+    const entity    = 'books';
+    const today     = moment().format('YYYY[-]MM[-]DD');
 
     let detail;
     let currPage;
@@ -134,7 +134,7 @@
                 bookData,
                 columns,
                 title,
-                subjArea,
+                entity,
                 search_title,
                 author,
                 genre,
@@ -178,7 +178,7 @@
 
         router.get('/new', (req, res, next) => {
             const title = 'New Book';
-            res.render('new', { title, book: {}, subjArea });
+            res.render('new', { title, book: {}, entity });
         });
 
         router.post('/new', (req, res, next) => {
@@ -195,7 +195,7 @@
 
                     const errors = error.errors;
 
-                    res.render('new', { detail, book: bookData, errors, title: 'New Book', subjArea });
+                    res.render('new', { detail, book: bookData, errors, title: 'New Book', entity });
                 }
             }).catch(error => {
                 res.status(500).send(error);
@@ -340,7 +340,7 @@
 
                 const title = `Book: ${ book.title }`;
 
-                res.render('detail', { subjArea, detail, title, book, columns, loanedBooks });
+                res.render('detail', { entity, detail, title, book, columns, loanedBooks });
 
             }).catch(error => {
                 res.status(500).send(error);
@@ -407,7 +407,7 @@
                         "Returned On"
                     ];
 
-                    res.render('detail', { detail, columns, loanedBooks, book, errors: error.errors, title, subjArea });
+                    res.render('detail', { detail, columns, loanedBooks, book, errors: error.errors, title, entity });
                 } else {
                     throw error;
                 }

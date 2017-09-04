@@ -15,7 +15,7 @@
     //                  'res' -- the response -- what the server sends back to the user
     //                  see http://jilles.me/express-routing-the-beginners-guide/ for a fuller explanation
     router.get('/', function(req, res, next) {  
-        res.render('home');       // GET & Render home page (home.pug)
+        res.render('entities');       // GET & Render home page (home.pug)
     });
     
     module.exports = router;

@@ -1,7 +1,9 @@
-.head-patron
-    h2 Patrons
-    ul.navbar-patron
-        li
-            a(href='/patrons/new') New/Update Patron
-        li
-            a(href="/patrons?page=1") List All
+#patrons
+    .header
+        .head-title
+            h2 Patrons
+        nav#navbar-patrons
+            a.nav-patron-update(href='#patron-form?page=1') 
+                button(type='button') Update
+            a.nav-patron-list(href='#patron-list-all?page=1')
+                button(type='button') List All
