@@ -1,8 +1,10 @@
 doctype
 html
-    //  head - links and metadata
     include includes/_app_head.pug
-    //  header -- master navigation
-    include includes/_master_nav.pug
-    //  set the variable entity to book, patron or loan
-    block content
+    //  header -- app-level navigation
+    include includes/_app_nav.pug
+    // all body content
+    body
+
+block content
+
