@@ -1,11 +1,12 @@
 body {
-    padding: 50px;
+    margin: 0;
+    padding: 0;
     font-family: 'Play', sans-serif;
     /*font-family: 'Noticia Text', serif;   alternate text if needed */
     font-size: 14px;
-    font-size: .75em;
-    /*background: url(/static/images/library.jpg) no-repeat fixed center;
-    background-size: cover;*/
+    background: url(/static/images/library.jpg) no-repeat fixed center;
+    background-size: cover;
+    color: #042356
 }
 
 .header {
@@ -26,8 +27,13 @@ body {
     margin-right: auto;
 }
 
+.app-title,
 .head-title {
     text-align: center;
+}
+
+.app-title h3 {
+    margin-top: -.5em;
 }
 
 nav {
@@ -35,8 +41,10 @@ nav {
     padding-bottom: .5em;
 }
 
-.nav-patrons {
-    padding: 0 .5em 0 .5em;
+.header.books,
+.header.patrons,
+.header.loans {
+    margin-top: -1.25em;
 }
 
 div[class*='nav-'], button {
@@ -61,4 +69,5 @@ a {
     color: #0065A4;
     text-decoration: none;
     font-weight: bold;
+    padding: 0 .5em 0 .5em
 }

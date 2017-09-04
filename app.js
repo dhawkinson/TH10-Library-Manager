@@ -11,7 +11,6 @@
 
     //  the routes
     const index         = require('./routes/index');
-    const selector      = require('./routes/selector');
     
     // view engine parameters setup
     app.set('views', path.join(__dirname, 'views'));  
@@ -26,7 +25,6 @@
 
     //  use the routes to get the app rolling
     app.use('/', index);
-    app.use('/', selector);
 
     //  prepare to use json parsing
     app.use(bodyParser.json());
