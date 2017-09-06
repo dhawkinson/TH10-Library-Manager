@@ -2,13 +2,16 @@ extends layout
 
 block content
     body
-        #books
-            include includes/_book_nav.pug
+        if entity = 'book'
+            #books
+                include includes/_book_nav.pug
 
-        #patrons
-            include includes/_patron_nav.pug
+        else if entity = 'patron'
+            #patrons
+                include includes/_patron_nav.pug
 
-        #loans
-            include includes/_loan_nav.pug
+        else if entity = 'loan'
+            #loans
+                include includes/_loan_nav.pug
 
-    footer#action
+    footer#action 

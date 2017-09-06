@@ -32,10 +32,6 @@ body {
     text-align: center;
 }
 
-.app-title h3 {
-    margin-top: -.5em;
-}
-
 nav {
     text-align: center;     /* to make the centering happen */
     padding-bottom: .5em;
