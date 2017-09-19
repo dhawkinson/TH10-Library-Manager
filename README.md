@@ -26,7 +26,7 @@ The library.db file should contain 3 tables. Create a Sequelize model for a book
 
 * The loans table should have the following columns: 
   * id (integer), 
-  *book_id (integer), 
+  * book_id (integer), 
   * patron_id (integer), 
   * loaned_on (date), 
   * return_by (date) 
@@ -53,21 +53,21 @@ As a librarian, I should have a home screen so I can access functionality easily
 ##Navigation: 
 
 As a librarian, I should be able to access a main navigation menu from every page of my application. The navigation should include links to the: 
-*  [ ] Books Listing page (*all_books.html*), 
-*  [ ] Patrons Listing page (*all_patrons.html*)
-*  [ ] Loans Listing page (*all_loans.html*) so I can view this information. See navigation on all pages for examples.
+*  [X] Books Listing page (*all_books.html*), 
+*  [X] Patrons Listing page (*all_patrons.html*)
+*  [X] Loans Listing page (*all_loans.html*) so I can view this information. See navigation on all pages for examples.
 ##Books Listing Page: 
 
 As a librarian, I should be able to filter books by ‘overdue’ and ‘checked out’ status on the Books Listing Page so I can quickly see the state of the library. Examples: all_books.html, overdue_books.html and checked_books.html.
-##Add a New Book: 
+##Add a New Book: [X]
 
 As a librarian, I should be able to add a book to the database so that they can be tracked on the system. Example: new_book.html.
 * The required fields for user input are:
-  *  [ ] title
-  *  [ ] author
-  *  [ ]genre
+  *  [X] title
+  *  [X] author
+  *  [X]genre
 * Optional fields:
-  *  [ ]first_published
+  *  [X]first_published
 
 The form should check that the information is valid. If the form information is valid, the page should redirect to the Books Listing Page, and the new book should appear in the list with updated information.
 ##Book Detail Page: 
@@ -134,7 +134,7 @@ For example, if the first name field is empty on the new patron form and the lib
 *  [ ] Include search fields on at least one of the books or patrons listing pages.
 *Examples:*
 *  [ ] first_name, last_name,library_id, etc for patrons
-*   [ ] title, author, genre, etc for books
+*  [ ] title, author, genre, etc for books
 Searching should be case **insensitive** and be partial matches for strings.
 ***NOTE:***
 * To get an "Exceeds Expectations" grade for this project, you'll need to complete each of the items in this section. See the rubric in the "How You'll Be Graded" tab above for details on how you'll be graded.

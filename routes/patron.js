@@ -8,11 +8,155 @@
     const Loan      = require('../models').Loan;
     const Book      = require('../models').Book;
     
-    const entity    = 'patrons';
+    debugger;
+
+    let entity      = 'patron';
+    let endpoint    = '';
     
-    //  GET the patrons page && perform the available functions as needed   
-    router.get('/', (req, res, next) => {
+    //  GET response for "new patron" request
+    router.get('/new', (req, res, next) => {
+        endpoint = "new";
+        res.render('selector', { entity, patronProperties: {} });
+    });
     
+    router.post('/new', (req, res, next) => {
+        endpoint = "new"
+        Patron.create(req.body).then(() => {
+            res.redirect('/patron');
+        }).catch(error => {
+            if (error.name === "SequelizeValidationError") {
+                const patron = Patron.build(req.body);
+    
+                const patronData = patron.get({
+                    plain: true
+                });
+    
+                res.render('selector', { patronProperties: patronData, errors: error.errors, title: 'New Patron', entity });
+            } else {
+                throw error;
+            }
+        }).catch(error => {
+            res.status(500).send(error);
+        });
+    });
+    /*
+    //  GET response for "patron detail" updates
+    router.get('/:id', (req, res, next) => {
+        endpoint = "detail"
+        Patron.findById(req.params.id).then(patron => {
+    
+            const patronData = patron.get({
+                plain: true
+            });
+    
+            const patronName = patronData.full_name.split(' ').join('_');
+    
+            res.redirect(`/patrons/${ req.params.id }/${ patronName }`);
+        });
+    });
+    
+    router.get('/:id/:name', (req, res, next) => {
+        endpoint = "detail"
+        Patron.findOne({
+            where: [{
+                id: req.params.id
+            }],
+            include: [{
+                model: Loan,
+                include: Book
+            }]
+        }).then(patron => {
+            const patronProperties = patron.get({
+                plain: true
+            });
+    
+            for (let loan of patronProperties.Loans) {
+                loan.Patron = {};
+                loan.Patron.full_name = patronProperties.full_name;
+            }
+    
+            const patronDetail = true;
+    
+            const columns = [
+                "Book",
+                "Patron",
+                "Loaned On",
+                "Return By",
+                "Return On"
+            ];
+    
+            const title = `Patron: ${ patronProperties.full_name }`;
+    
+            res.render('selector', {
+                patronDetail,
+                patronProperties,
+                entity,
+                title,
+                columns,
+                loanedBooks: patronProperties.Loans
+            });
+    
+        }).catch(err => {
+            console.log(err);
+        });
+    });
+    
+    router.post('/:id/:name', (req, res, next) => {
+        endpoint = "detail"
+        Patron.findOne({
+            where: [{
+                id: req.params.id
+            }],
+            include: [{
+                model: Loan,
+                include: Book
+            }]
+        }).then(patron => {
+    
+            const patronProperties = patron.get({
+                plain: true
+            });
+    
+            for (let loan of patronProperties.Loans) {
+                loan.Patron = {};
+                loan.Patron.full_name = patronProperties.full_name;
+            }
+    
+            const patronDetail = true;
+    
+            const columns = [
+                "Book",
+                "Patron",
+                "Loaned On",
+                "Return By",
+                "Return On"
+            ];
+    
+            const title = `Patron: ${ patronProperties.full_name }`;
+    
+            Patron.update(req.body, {
+                where: {
+                    id: req.params.id
+                }
+            }).then(() => {
+                res.redirect('/patrons');
+            }).catch(error => {
+    
+                if (error.name === "SequelizeValidationError") {
+    
+                    res.render('selector', { patronDetail, columns, patronProperties, title, loanedBooks: patronProperties.Loans, errors: error.errors, entity });
+                } else {
+                    throw error;
+                }
+            }).catch(error => {
+                res.status(500).send(error);ExtensionScriptApis
+            });
+        });
+    });
+    
+    //  GET response for "all patrons" listing
+    router.get('/list', (req, res, next) => {
+        endpoint="list"
         Patron.findAll({
             order: [
                 ['last_name', 'ASC'],
@@ -20,7 +164,7 @@
             ]
         }).then(patrons => {
     
-            const columns = [
+            const colHeads = [
                 "Name",
                 "Address",
                 "Email",
@@ -36,143 +180,9 @@
     
             const title = 'Patrons';
     
-            res.render('all', { patronData, columns, title, entity });
+            res.render('selector', { patronData, columns, title, entity });
         });
-    });
-    
-    router.get('/new', (req, res, next) => {
-        res.render('new', { entity, patronDetails: {} });
-    });
-    
-    router.post('/new', (req, res, next) => {
-        Patron.create(req.body).then(() => {
-            res.redirect('/patrons');
-        }).catch(error => {
-            if (error.name === "SequelizeValidationError") {
-                const patron = Patron.build(req.body);
-    
-                const patronData = patron.get({
-                    plain: true
-                });
-    
-                res.render('new', { patronDetails: patronData, errors: error.errors, title: 'New Patron', entity });
-            } else {
-                throw error;
-            }
-        }).catch(error => {
-            res.status(500).send(error);
-        });
-    });
-    
-    router.get('/:id', (req, res, next) => {
-        Patron.findById(req.params.id).then(patron => {
-    
-            const patronData = patron.get({
-                plain: true
-            });
-    
-            const patronName = patronData.full_name.split(' ').join('_');
-    
-            res.redirect(`/patrons/${ req.params.id }/${ patronName }`);
-        });
-    });
-    
-    router.get('/:id/:name', (req, res, next) => {
-        Patron.findOne({
-            where: [{
-                id: req.params.id
-            }],
-            include: [{
-                model: Loan,
-                include: Book
-            }]
-        }).then(patron => {
-            const patronDetails = patron.get({
-                plain: true
-            });
-    
-            for (let loan of patronDetails.Loans) {
-                loan.Patron = {};
-                loan.Patron.full_name = patronDetails.full_name;
-            }
-    
-            const detail = true;
-    
-            const columns = [
-                "Book",
-                "Patron",
-                "Loaned On",
-                "Return By",
-                "Return On"
-            ];
-    
-            const title = `Patron: ${ patronDetails.full_name }`;
-    
-            res.render('detail', {
-                detail,
-                patronDetails,
-                entity,
-                title,
-                columns,
-                loanedBooks: patronDetails.Loans
-            });
-    
-        }).catch(err => {
-            console.log(err);
-        });
-    });
-    
-    router.post('/:id/:name', (req, res, next) => {
-        Patron.findOne({
-            where: [{
-                id: req.params.id
-            }],
-            include: [{
-                model: Loan,
-                include: Book
-            }]
-        }).then(patron => {
-    
-            const patronDetails = patron.get({
-                plain: true
-            });
-    
-            for (let loan of patronDetails.Loans) {
-                loan.Patron = {};
-                loan.Patron.full_name = patronDetails.full_name;
-            }
-    
-            const detail = true;
-    
-            const columns = [
-                "Book",
-                "Patron",
-                "Loaned On",
-                "Return By",
-                "Return On"
-            ];
-    
-            const title = `Patron: ${ patronDetails.full_name }`;
-    
-            Patron.update(req.body, {
-                where: {
-                    id: req.params.id
-                }
-            }).then(() => {
-                res.redirect('/patrons');
-            }).catch(error => {
-    
-                if (error.name === "SequelizeValidationError") {
-    
-                    res.render('detail', { detail, columns, patronDetails, title, loanedBooks: patronDetails.Loans, errors: error.errors, entity });
-                } else {
-                    throw error;
-                }
-            }).catch(error => {
-                res.status(500).send(error);ExtensionScriptApis
-            });
-        });
-    });
-    
+    });*/
+
     module.exports = router;
 }());

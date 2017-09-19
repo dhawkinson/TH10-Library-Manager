@@ -1,0 +1,23 @@
+#loan-return.w3-modal
+    .w3-modal-content.w3-card-4.w3-animate-zoom
+        .w3-container.w3-sand
+            span.w3-button.w3-sand.w3-xlarge.w3-display-topright(onclick="document.getElementById('loan-return').style.display='none'") ×
+            h1 Patron: Return Book
+            p
+                strong Book Title: 
+                | Harry Potter and the Goblet of Fire
+            p
+                strong Loaned By: 
+                | Andrew Chalkley
+            p
+                strong Loaned On: 
+                | 2015-12-11
+            p
+                strong Return By: 
+                | 2015-12-18
+            form
+                p
+                    label(for='returned_on') Returned on:
+                    input#returned_on(type='text', value='2020-10-10')
+                p
+                    input(type='submit', value='Return Book')

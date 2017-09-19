@@ -1,0 +1,29 @@
+#loan-listings.w3-modal
+    .w3-modal-content.w3-card-4.w3-animate-zoom
+        header.w3-container.w3-sand 
+            span.w3-button.w3-sand.w3-xlarge.w3-display-topright(onclick="document.getElementById('loan-listings').style.display='none'") ×
+            h1 Select Your Listing Type
+        .w3-bar.w3-border-bottom
+            button.tablink.w3-bar-item.w3-button(onclick="openloan(event, 'loansAll')") Loans - All
+            button.tablink.w3-bar-item.w3-button(onclick="openloan(event, 'loansCheckedOut')") Loans - Checked Out
+            button.tablink.w3-bar-item.w3-button(onclick="openloan(event, 'loansOverdue')") Loans - Overdue
+        #loans-all.w3-container.loan
+            // Filter goes here
+            h2 Loans - All
+            include ./_table_def.pug
+            include ./_table_heads.pug
+            include ./_table_rows_loans.pug
+        #loans-checked-out.w3-container.loan
+            // Filter goes here
+            h2 Loans - Checked Out
+            include ./_table_def.pug
+            include ./_table_heads.pug
+            include ./_table_rows_loans.pug
+        #loans-overdue.w3-container.loan
+            // Filter goes here
+            h2 Loans - Overdue
+            include ./_table_def.pug
+            include ./_table_heads.pug
+            include ./_table_rows_loans.pug
+        .w3-container.w3-amber.w3-padding
+            button.w3-button.w3-right.w3-white.w3-border(onclick="document.getElementById('loan-listings').style.display='none'") Close

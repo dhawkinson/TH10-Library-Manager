@@ -6,12 +6,14 @@
     const router    = express.Router();
     const moment    = require('moment');
 
+    const today     = moment().format('YYYY[-]MM[-]DD');
+
     const Book      = require('../models').Book;
     const Loan      = require('../models').Loan;
     const Patron    = require('../models').Patron;
 
-    const entity    = 'books';
-    const today     = moment().format('YYYY[-]MM[-]DD');
+    let entity      = 'book';
+    let subent      = '';
 
     let detail;
     let currPage;
@@ -399,7 +401,7 @@
 
                     const title = `Book: ${ book.title }`;
 
-                    const columns = [
+                    const colHeads = [
                         "Book",
                         "Patron",
                         "Loaned On",

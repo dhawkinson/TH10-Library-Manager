@@ -1,17 +1,26 @@
-extends layout
+extends ./layout
 
 block content
     body
-        if entity = 'book'
-            #books
-                include includes/_book_nav.pug
-
-        else if entity = 'patron'
-            #patrons
-                include includes/_patron_nav.pug
-
-        else if entity = 'loan'
-            #loans
-                include includes/_loan_nav.pug
-
-    footer#action 
+        .grid
+            .header
+                img.brand(src='./static/images/librarian.png', alt='librarian')
+                h1.app-title Welcome to Library Manager
+                h3.head-books Books
+                h3.head-patrons Patrons
+                h3.head-loans Loans
+                a.nav-book-new(href='./book/new') New Book
+                a.nav-book-detail(href='./book/detail') Book Detail
+                a.nav-book-list(href='./book/list') List Books
+                a.nav-patron-new(href='./patron/new') New Patron
+                a.nav-patron-detail(href='./patron/detail') Patron Detail
+                a.nav-patron-list(href='./patron/list') List Patrons
+                a.nav-loan-new(href='./loan/new') New Loan
+                a.nav-loan-return(href='./loan/return') Loan Return
+                a.nav-loan-list(href='./loan/list') List Loans
+            .gap
+            .worksurface
+                h2.work-title Work Surface
+                img.separator(src='./static/images/separator.png', alt='separator')
+                .work-area
+                block content

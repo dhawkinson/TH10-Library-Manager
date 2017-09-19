@@ -1,69 +1,134 @@
+* {box-sizing: border-box;}
+
 body {
     margin: 0;
     padding: 0;
     font-family: 'Play', sans-serif;
-    /*font-family: 'Noticia Text', serif;   alternate text if needed */
-    font-size: 14px;
-    background: url(/static/images/library.jpg) no-repeat fixed center;
-    background-size: cover;
+    /*background: url(/static/images/library.jpg) no-repeat fixed center;
+    background-size: cover;*/
     color: #042356
 }
 
+.grid {
+    width: 95%;
+    margin: 0 auto 0 auto;
+}
+
+.header,
+.worksurface {
+    background-color: #FFFFFF;
+    opacity: .75;
+    border-radius: 10px;
+}
+
 .header {
-    position: relative;
-    top: 0;
-    left: 0;
-    background-color: #CECCCC;
-    opacity: .80;
-    width: 100%;
-    padding-bottom: 1em;
-}
-.img-librarian {
-    height: 50px;
-    width: 50px;
-    display: block;
-    padding-top: .75em;
-    margin-left: auto;
-    margin-right: auto;
+    grid-area: headspace;
 }
 
-.app-title,
-.head-title {
-    text-align: center;
+.gap {
+    grid-area: "gap";
 }
 
-nav {
-    text-align: center;     /* to make the centering happen */
-    padding-bottom: .5em;
+.worksurface {
+    grid-area: workspace
 }
 
-.header.books,
-.header.patrons,
-.header.loans {
-    margin-top: -1.25em;
+.logo {
+    grid-area: brand;
 }
 
-div[class*='nav-'], button {
-    width: 60px;
-    background-color: white;
-    font-size: smaller;
-    text-align: center;
-    border-radius: 3px;
+.app-title {
+    grid-area: app-title;
 }
 
-div[class*='nav-book'], button,
-div[class*='nav-patron'], button,
-div[class*='nav-loan'], button {
-    width: 60px;
-    background-color: white;
-    font-size: smaller;
-    text-align: center;
-    border-radius: 3px;
+.head-books {
+    grid-area: head-books
+}
+
+.head-patrons {
+    grid-area: head-patrons
+}
+
+.head-loans {
+    grid-area: head-loans
+}
+
+.nav-book-new {
+    grid-area: nav-book-new
+}
+
+.nav-book-detail {
+    grid-area: nav-book-detail
+}
+
+.nav-book-list {
+    grid-area: nav-book-list
+}
+
+.nav-patron-new {
+    grid-area: nav-patron-new
+}
+
+.nav-patron-detail {
+    grid-area: nav-patron-detail
+}
+
+.nav-patron-list {
+    grid-area: nav-patron-list
+}
+
+.nav-loan-new {
+    grid-area: nav-loan-new
+}
+
+.nav-loan-return {
+    grid-area: nav-loan-return
+}
+
+.nav-loan-list {
+    grid-area: nav-loan-list
+}
+
+.work-title {
+    grid-area: worktitle;
+}
+
+.work-area {
+    grid-area: workarea;
+}
+
+[class^='head-'] {
+    text-align: right;
+}
+
+[class^='head-'] h2 {
+    margin: 0;
+    padding: 0;
+}
+
+[class^='nav-'] {
+    width:10%
+    padding-left: 2em;
+}
+
+[class^='nav-patron'] {
+    padding-top: .5em;
+    padding-bottom: .25em;
 }
 
 a {
+    display: inline-block;
     color: #0065A4;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 0 .5em 0 .5em
+    padding-left: 1.5em;
+}
+h2.work-title {
+    text-align: center;
+    padding: 0;
+    margin: .5em;
+}
+
+.separator {
+    width:100%;
+    margin: 0;
+    padding: 0;
 }

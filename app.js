@@ -4,14 +4,17 @@
     // still maintains access to all globals
 
     //  require the app modules
-    const express       = require('express');
-    const path          = require('path');
-    const bodyParser    = require('body-parser');
+    const express       = require('express');           //  imports the framework into the app
+    const path          = require('path');              //  a core Node module for working with and handling paths
+    const bodyParser    = require('body-parser');       //  will add a body object to request to access POST parameters
     const app           = express();
 
-    //  the routes
-    const index         = require('./routes/index');
-    
+    //  define the routes
+    const homeRoute     = require('./routes/index');
+    const bookRoute     = require('./routes/book');
+    const patronRoute   = require('./routes/patron');
+    const loanRoute     = require('./routes/loan');
+
     // view engine parameters setup
     app.set('views', path.join(__dirname, 'views'));  
     app.set('view engine', 'pug'); 
@@ -23,12 +26,15 @@
     //  The default route is './routes/index.js' (index)
     //  File names without extensions are assumed to be filename.js
 
-    //  use the routes to get the app rolling
-    app.use('/', index);
+    //  use the routes (API end points)
+    app.use('/', homeRoute);            //  route to home page
+    app.use('/book', bookRoute);        //  route to books
+    app.use('/patron', patronRoute);    //  route to patrons
+    app.use('/loan', loanRoute)         //  route to loans of books
 
     //  prepare to use json parsing
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.json());                             //  ability to parse JSON. Necessary for sending data
+    app.use(bodyParser.urlencoded({ extended: false }));    //  to read data from URLs (GET requests)
 
     //  rename public to static
     app.use('/static', express.static(path.join(__dirname, 'public')));
@@ -64,5 +70,4 @@
     });
 
     module.exports = app;
-    
 }());

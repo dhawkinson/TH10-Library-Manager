@@ -1,0 +1,12 @@
+for book in loanedBooks
+    tr
+        td 
+            a(href=`/books/${ book.book_id }/${ book.Book.title.replace(/ /g, '_') }`)= book.Book.title
+        td
+            a(href=`/patrons/${ book.patron_id }/${ book.Patron.full_name.replace(/ /g, '_') }`)= book.Patron.full_name 
+        td= book.loaned_on
+        td= book.return_by
+        td= book.returned_on
+        if book.returned_on === null
+            td 
+                a.button(href=`/books/${ book.id }/return`) Return Book

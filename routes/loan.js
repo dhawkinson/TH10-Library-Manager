@@ -5,14 +5,18 @@
     const express       = require('express');
     const router        = express.Router();
     const moment        = require('moment');
+
+    const today         = moment().format('YYYY[-]MM[-]DD');
+    const weekFromToday = moment().add(7, 'days').format('YYYY[-]MM[-]DD');
+
     const Book          = require('../models').Book;
     const Loan          = require('../models').Loan;
     const Patron        = require('../models').Patron;
     
-    const entity        = 'loans';
+    let entity          = 'loan';
+    let subent          = '';
+
     
-    const today         = moment().format('YYYY[-]MM[-]DD');
-    const weekFromToday = moment().add(7, 'days').format('YYYY[-]MM[-]DD');
     
     let currPage;
     let filter;
@@ -118,7 +122,7 @@
         }
     
         loanQuery.then(loans => {
-            const columns = [
+            const colHeads = [
                 "Book",
                 "Patron",
                 "Loaned On",

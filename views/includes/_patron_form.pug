@@ -1,0 +1,26 @@
+#patron-new-form.w3-modal
+    .w3-modal-content.w3-card-4.w3-animate-zoom
+        .w3-container.w3-sand
+            span.w3-button.w3-sand.w3-xlarge.w3-display-topright(onclick="document.getElementById('patron-new-form').style.display='none'") ×
+            h1 New Patron    
+            form(action=`${ detail ? `/${ content }/${patronProperties.id}/${ patronProperties.first_name }_${ patronDetails.last_name }` : `/${ content }/new`}`, method="post")
+                p
+                    label(for='first_name') First Name
+                    input(id="first_name", name="first_name", type="text", value=patronProperties.first_name)
+                p
+                    label(for='last_name') Last Name
+                    input(id="last_name", name="last_name", type="text", value=patronProperties.last_name)
+                p
+                    label(for='address')  Address
+                    input(id="address", name="address", type="text", value=patronProperties.address)
+                p
+                    label(for='email') Email
+                    input(id="email", name="email", type="text", value=patronProperties.email)
+                p
+                    label(for='library_id') Library ID
+                    input(id="library_id", name="library_id", type="text", value=patronProperties.library_id)
+                p
+                    label(for='zip_code') Zip Code
+                    input(id="zip_code", name="zip_code", type="text", value=patronProperties.zip_code)
+                p
+                    input(type="submit" value=`${ detail ? 'Update' : 'Create New Patron'}`)

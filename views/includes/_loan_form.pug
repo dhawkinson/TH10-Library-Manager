@@ -1,0 +1,27 @@
+#loan-new-form.w3-modal
+    .w3-modal-content.w3-card-4.w3-animate-zoom
+        .w3-container.w3-sand
+            span.w3-button.w3-sand.w3-xlarge.w3-display-topright(onclick="document.getElementById('loan-new-form').style.display='none'") ×
+            include _error
+            - let today = moment();
+            - let aWeekFromToday = moment().add(7, 'days');
+            h1 New Loan
+            form(action=`/${content}/new`, method="post")
+                p
+                    label(for='book_id') Book
+                    select(name='book_id')
+                        each book in books
+                            option(value=book.id)= book.title
+                p
+                    label(for='patron_id') Patron
+                    select(name='patron_id')
+                        each patron in patrons
+                            option(value=patron.id)= patron.title
+                p
+                    label(for='loaned_on') Loaned On:
+                    input(id="loaned_on", name="loaned_on", type="text", value=`${ today ? today : '' }`)
+                p
+                    label(for='return_by') Return By:
+                    input(id="return_by", name="return_by", type="text", value=`${ aWeekFromToday ? aWeekFromToday : '' }`)
+                p
+                    input(type='submit', value='Create New Loan')
