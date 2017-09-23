@@ -55,44 +55,40 @@ body {
     grid-area: bookNew;
 }
 
-.book-list-all {
-    grid-area: bookListing;
-}
-
-.book-detail {
-    grid-area: bookDetail;
-}
-
 .patron-new {
     grid-area: patronNew;
-}
-
-.patron-list-all {
-    grid-area: patronListing;
-}
-
-.patron-detail {
-    grid-area: patronDetail;
 }
 
 .loan-new {
     grid-area: loanNew;
 }
 
+.book-list-all {
+    grid-area: listBooksAll;
+}
+
+.patron-list-all {
+    grid-area: listPatronsAll;
+}
+
 .loan-list-all {
-    grid-area: loanListing;
+    grid-area: listLoansAll;
 }
 
-.loan-return {
-    grid-area: loanReturn;
+.book-list-co {
+    grid-area: listBooksCO;
 }
 
-.work-title {
-    grid-area: worktitle;
+.loan-list-co {
+    grid-area: listLoansCO;
 }
 
-.work-area {
-    grid-area: workarea;
+.book-list-od {
+    grid-area: listBooksOD;
+}
+
+.loan-list-od {
+    grid-area: listLoansOD;
 }
 
 [class^='head-'] h2 {
@@ -151,7 +147,8 @@ th {
     text-align: left;
 }
 
-td a {              /*  allows links to justify with heads  */
+td a,
+a.nav {              /*  allows links to justify with heads  */
     padding: 0;
 }
 

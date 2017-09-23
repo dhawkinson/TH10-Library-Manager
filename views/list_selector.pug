@@ -2,7 +2,10 @@ extends ./layout
 block content
     include ./includes/_head_nav
     .card
-        include ./includes/_filter
+        if entity ==="patron"
+            h2= `${title}`
+        else
+            h2=`${title} - ${filter}`
         table
             include ./includes/_table_heads
             tbody

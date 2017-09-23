@@ -231,7 +231,15 @@
             const count = Math.ceil(loans.count / 10);
     
             currPage = req.query.page;
-            filter = req.query.filter;
+            if ( req.query.filter === 'checked_out' ) {
+                filter = 'Checked Out'
+            }
+            else if ( req.query.filter === 'overdue' ) {
+                filter = 'Overdue'
+            }
+            else { 
+                filter = 'All'
+            }
     
             let loanedBooks = loans.rows.map(loan => {
                 return loan.get({

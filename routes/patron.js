@@ -59,7 +59,7 @@
                 });
             });
     
-            const title = 'Patrons';
+            const title  = 'Patrons - All';
     
             res.render('list_selector', { patronData, columns, title, entity });
         });
@@ -110,7 +110,7 @@
     
             const title = `Patron: ${ patronProperties.full_name }`;
     
-            res.render('/detail_selector', {
+            res.render('detail_selector', {
                 patronDetail,
                 patronProperties,
                 entity,

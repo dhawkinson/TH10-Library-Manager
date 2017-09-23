@@ -2,6 +2,10 @@ extends ./layout
 block content
     include ./includes/_head_nav
     .card
+        if entity === 'book'
+            include ./includes/_book_form
+        else if entity === 'patron'
+            include ./includes/_patron_form
         h2 Loan History
         table
             include ./includes/_table_heads

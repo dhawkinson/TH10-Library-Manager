@@ -23,6 +23,33 @@
     let genre;
     let author;
     let first_published;
+    
+    // GET new book functionality
+    router.get('/new', (req, res, next) => {
+        const title = 'New Book';
+        res.render('new_selector', { title, book: {}, entity });
+    });
+
+    router.post('/new', (req, res, next) => {
+        Book.create(req.body).then(() => {
+            res.redirect('/books');
+        }).catch(error => {
+            if (error.name === "SequelizeValidationError") {
+                detail = false;
+                const book = Book.build(req.body);
+
+                const bookData = book.get({
+                    plain: true
+                });
+
+                const errors = error.errors;
+
+                res.render('new_selector', { detail, book: bookData, errors, title: 'New Book', entity });
+            }
+        }).catch(error => {
+            res.status(500).send(error);
+        });
+    });
 
     //  GET the books page && perform the available functions as needed
     router.get('/', (req, res, next) => {
@@ -44,44 +71,8 @@
                 offset: (req.query.page * 10) - 10,
             });
         }
-
-        if (req.query.filter === 'overdue') {
-            bookQuery = Book.findAndCountAll({
-                distinct: 'title',
-                order: [
-                    ['title', 'ASC']
-                ],
-                limit: 10,
-                offset: (req.query.page * 10) - 10,
-                include: {
-                    model: Loan,
-                    where: {
-                        return_by: {
-                                lt: today
-                        },
-                        returned_on: null
-                    }
-                }
-            });
-        }
-
-        if (req.query.filter === 'checked_out') {
-            bookQuery = Book.findAndCountAll({
-                distinct: 'title',
-                order: [
-                    ['title', 'ASC']
-                ],
-                limit: 10,
-                offset: (req.query.page * 10) - 10,
-                include: {
-                    model: Loan,
-                    where: {
-                        returned_on: null
-                    }
-                }
-            });
-        }
-
+        
+        // query for All books
         if (req.query.search) {
             bookQuery = Book.findAndCountAll({
                 where: {
@@ -103,10 +94,56 @@
             });
         }
 
-        bookQuery.then(books => {
+        //  query for Checked Out books
+        if (req.query.filter === 'checked_out') {
+            bookQuery = Book.findAndCountAll({
+                distinct: 'title',
+                order: [
+                    ['title', 'ASC']
+                ],
+                limit: 10,
+                offset: (req.query.page * 10) - 10,
+                include: {
+                    model: Loan,
+                    where: {
+                        returned_on: null
+                    }
+                }
+            });
+        }
+        
+        //  query for Overdue books
+        if (req.query.filter === 'overdue') {
+            bookQuery = Book.findAndCountAll({
+                distinct: 'title',
+                order: [
+                    ['title', 'ASC']
+                ],
+                limit: 10,
+                offset: (req.query.page * 10) - 10,
+                include: {
+                    model: Loan,
+                    where: {
+                        return_by: {
+                                lt: today
+                        },
+                        returned_on: null
+                    }
+                }
+            });
+        }
 
+        bookQuery.then(books => {
             currPage = req.query.page;
-            filter = req.query.filter;
+            if ( req.query.filter === 'checked_out' ) {
+                filter = 'Checked Out'
+            }
+            else if ( req.query.filter === 'overdue' ) {
+                filter = 'Overdue'
+            }
+            else { 
+                filter = 'All'
+            }
             search_title = req.query.title;
             author = req.query.author;
             genre = req.query.genre;
@@ -175,32 +212,6 @@
                 offset: (req.query.page * 10) - 10,
             }).then(books => {
                 res.redirect(`/books?page=1&search=true&title=${ req.body.title ? req.body.title : '' }&author=${ req.body.author ? req.body.author : ''}&genre=${ req.body.genre ? req.body.genre : ''}&first_published=${ req.body.first_published ? req.body.first_published : ''}`);
-            });
-        });
-
-        router.get('/new', (req, res, next) => {
-            const title = 'New Book';
-            res.render('new_selector', { title, book: {}, entity });
-        });
-
-        router.post('/new', (req, res, next) => {
-            Book.create(req.body).then(() => {
-                res.redirect('/books');
-            }).catch(error => {
-                if (error.name === "SequelizeValidationError") {
-                    detail = false;
-                    const book = Book.build(req.body);
-
-                    const bookData = book.get({
-                        plain: true
-                    });
-
-                    const errors = error.errors;
-
-                    res.render('new_selector', { detail, book: bookData, errors, title: 'New Book', entity });
-                }
-            }).catch(error => {
-                res.status(500).send(error);
             });
         });
 
