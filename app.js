@@ -14,7 +14,6 @@
     const bookRoute     = require('./routes/book');
     const patronRoute   = require('./routes/patron');
     const loanRoute     = require('./routes/loan');
-    const returnRoute   = require('./routes/return');
 
     // view engine parameters setup
     app.set('views', path.join(__dirname, 'views'));  
@@ -32,7 +31,6 @@
     app.use('/book', bookRoute);        //  route to books
     app.use('/patron', patronRoute);    //  route to patrons
     app.use('/loan', loanRoute)         //  route to loans of books
-    app.use('/return', returnRoute)     //  route to return loaned books
 
     //  prepare to use json parsing
     app.use(bodyParser.json());                             //  ability to parse JSON. Necessary for sending data

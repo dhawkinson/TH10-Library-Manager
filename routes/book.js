@@ -51,7 +51,7 @@
         });
     });
 
-    //  GET the books page && perform the available functions as needed
+    //  GET the books page 
     router.get('/', (req, res, next) => {
 
         if (req.query.page === undefined && req.query.filter === undefined) {

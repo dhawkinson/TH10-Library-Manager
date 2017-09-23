@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             validate: {
                 notEmpty: {
-                    msg: 'You must specify a valid book id.'
+                    msg: 'Book Id is required.'
                 }
             }
         },
@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             validate: {
                 notEmpty: {
-                    msg: 'You must specify a valid patron id.'
+                    msg: 'Patron Id is required.'
                 }
             }
         },
@@ -24,23 +24,23 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.DATEONLY,
             validate: {
                 notEmpty: {
-                    msg: 'The you must specify the loaned on date.'
+                    msg: 'Loaned On Date is required.'
                 },
                 is: {
                     args: /^(\d{4})-((02-(0[1-9]|[12]\d))|((0[469]|11)-(0[1-9]|[12]\d|30))|((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])))$/ig,
-                    msg: 'The loaned on date must be in the correct format. ex. 2017-07-08'
+                    msg: 'Loaned On Date must be in the correct format. ex. 2017-07-08'
                 },
                 isDate: {
-                    msg: 'The loaned on date must be in the correct format. ex. 2017-07-08'
+                    msg: 'Loaned On Date must be in the correct format. ex. 2017-07-08'
                 },
                 isAfter: {
                     args: today,
-                    msg: 'Loaned on date must be today or in the future.'
+                    msg: 'Loaned on Date must be today or in the future.'
                 },
                 isNotSpecial(value) {
                     const special = /[!@#$%^&*()_+=<>,.'";:`~]+/ig;
                     if (value.match(special)) {
-                        throw new Error('The loaned on date must be in the correct format. ex. 2017-07-08');
+                        throw new Error('Loaned On Date must be in the correct format. ex. 2017-07-08');
                     }
                 }
             }
@@ -49,22 +49,22 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.DATEONLY,
             validate: {
                 notEmpty: {
-                    msg: 'You must specify a return by date.'
+                    msg: 'Return By Date is required.'
                 },
                 is: {
                     args: /^(\d{4})-((02-(0[1-9]|[12]\d))|((0[469]|11)-(0[1-9]|[12]\d|30))|((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])))$/ig,
-                    msg: 'The loaned on date must be in the correct format. ex. 2017-07-08'
+                    msg: 'Return By Date must be in the correct format. ex. 2017-07-08'
                 },
                 not: {
                     args: /[!@#$%^&*()_+=<>,.'";:`~]/ig,
-                    msg: 'The loaned on date must be in the correct format. ex. 2017-07-08'
+                    msg: 'Return By Date must be in the correct format. ex. 2017-07-08'
                 },
                 isAfter: {
                     args: today,
-                    msg: 'Loaned on date must be today or in the future.'
+                    msg: 'Return By Date must be today or in the future.'
                 },
                 isDate: {
-                    msg: 'The return by date must be in the correct format. ex. 2017-07-08'
+                    msg: 'Return By Date must be in the correct format. ex. 2017-07-08'
                 }
             }
         },

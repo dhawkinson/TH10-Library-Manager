@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 notEmpty: {
-                    msg: 'You must enter a first name for this patron.'
+                    msg: 'First Name is required.'
                 }
             }
         },
@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 notEmpty: {
-                    msg: 'You must enter a last name for this patron.'
+                    msg: 'Last Name is required'
                 }
             }
         },
@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 notEmpty: {
-                    msg: 'You must enter an address for this patron.'
+                    msg: 'Address is required.'
                 }
             }
         },
@@ -33,10 +33,10 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 notEmpty: {
-                    msg: 'Patron email field cannot be empty.'
+                    msg: 'Email is required.'
                 },
                 isEmail: {
-                    msg: 'You must enter an valid email for this patron. ex. person@website.com'
+                    msg: 'Email must be in a valid format ex. person@domain.com'
                 }
             }
         },
@@ -45,7 +45,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 notEmpty: {
-                    msg: 'The library id cannot be blank.'
+                    msg: 'Library Id is required.'
                 }
             }
         },
@@ -55,10 +55,10 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 not: {
                     args: /[a-zA-Z!@#$%\^&*()_+=[\]{}:;'".,/\\?`~\-<>]/gim,
-                    msg: 'The zip code can only contain the numbers 0-9'
+                    msg: 'Zip code must contain only numbers, 0-9'
                 },
                 notEmpty: {
-                    msg: 'You must enter a valid zip code'
+                    msg: 'Zip Code is required'
                 }
             }
         }

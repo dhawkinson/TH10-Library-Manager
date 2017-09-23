@@ -74,11 +74,11 @@ As a librarian, I should be able to filter books by ‘overdue’ and ‘checked
 As a librarian, I should be able to add a book to the database so that they can be tracked on the system. Example: new_book.html.
 
 * The required fields for user input are:
-  *  [ ] title
-  *  [ ] author
-  *  [ ]genre
+  *  [x] title
+  *  [x] author
+  *  [x]genre
 * Optional fields:
-  *  [X]first_published
+  *  [x]first_published
 
 The form should check that the information is valid. If the form information is valid, the page should redirect to the Books Listing Page, and the new book should appear in the list with updated information.
 
@@ -111,11 +111,11 @@ As a librarian, I should be able to check out a book so I can lend books to patr
 
 * The required fields for the New Loan field are:
   * [x] book_id
-  * [ ] patron_id
-  * [ ] loaned_on
-  * [ ] return_by
+  * [x] patron_id
+  * [x] loaned_on
+  * [x] return_by
 * Not required: 
-  *  [ ] returned_on
+  * [x] returned_on
 
 ##Return Book Page: 
 
@@ -144,12 +144,12 @@ As a librarian, I should be able to go to a **patron's detail page**, make edits
 As a librarian, I should be able to create new library patrons so they can use the facilities. Example: new_patron.html.
 
 * The required fields for user input are:
-  *  [ ] first_name
-  *  [ ] last_name
-  *  [ ] address
-  *  [ ] email
-  *  [ ] library_id
-  *  [ ] zip_code
+  *  [x] first_name
+  *  [x] last_name
+  *  [x] address
+  *  [x] email
+  *  [x] library_id
+  *  [x] zip_code
 
 ##Notifications
 

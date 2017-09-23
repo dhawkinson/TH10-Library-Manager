@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 notEmpty: {
-                    msg: 'You must provide a book title.'
+                    msg: 'Book Title is required.'
                 },
             }
         },
@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 notEmpty: {
-                    msg: 'You must provide a genre.'
+                    msg: 'Genre is required.'
                 },
             }
         },
@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 notEmpty: {
-                    msg: 'You must provide an author'
+                    msg: 'Author is required'
                 },
             }
         },
@@ -35,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 not: {
                     args: /[a-zA-Z!@#$%\^&*()_+=[\]{}:;'".,/\\?`~\-<>]/gim,
-                    msg: 'The year first published can only contain numbers in the format: ex. 1999'
+                    msg: 'Year First Published must be numeric in the format: ex. 1999'
                 }
             }
         }
