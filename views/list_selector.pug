@@ -1,0 +1,16 @@
+extends ./layout
+block content
+    include ./includes/_head_nav
+    .card
+        include ./includes/_filter
+        table
+            include ./includes/_table_heads
+            tbody
+                if entity === "book"
+                    include ./includes/_table_rows_books
+                if entity === "patron"
+                    include ./includes/_table_rows_patrons
+                if entity === "loan"
+                    include ./includes/_table_rows_loans
+        if entity === "book" || entity === "loan"
+            include ./includes/_pagination

@@ -1,0 +1,7 @@
+- var page = 1;
+
+.pagination
+    if count > 1
+        while page <= count
+            a.button(href=`/${ entity }?page=${ page }${ search ? `&search=${ search }&title=${ search_title }&author=${ author }&genre=${ genre }&first_published=${ first_published }` : ''}${ filter ? `&filter=${filter}` : ''}` class="page")= page++ 
+

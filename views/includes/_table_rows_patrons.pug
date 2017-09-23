@@ -1,0 +1,9 @@
+
+for patron in patronData
+    tr
+        td 
+            a(href=`${entity}/${patron.id}`)= patron.full_name
+        td= patron.address
+        td= patron.email
+        td= patron.library_id
+        td= patron.zip_code

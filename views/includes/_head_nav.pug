@@ -1,0 +1,15 @@
+body
+    #top.header
+        a.top(href='/#top')
+            img.logo(src='/static/images/librarian.png', alt='librarian')
+        h1.app-title Welcome to Library Manager
+        h3.head-books Books|
+        h3.head-patrons Patrons|
+        h3.head-loans Loans|
+        a.book-new.nav(href='/book/new') New
+        a.book-list-all.nav(href='/book?page=1') Listings
+        a.patron-new.nav(href='/patron/new') New
+        a.patron-list-all.nav(href='/patron?page=1') Listings
+        a.loan-new.nav(href='/loan/new') New
+        a.loan-list-all.nav(href='/loan?page=1') Listings
+    .gap

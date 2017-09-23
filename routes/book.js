@@ -129,7 +129,7 @@
 
             const title = "Books";
 
-            res.render('all', {
+            res.render('list_selector', {
                 count,
                 currPage,
                 filter,
@@ -180,7 +180,7 @@
 
         router.get('/new', (req, res, next) => {
             const title = 'New Book';
-            res.render('new', { title, book: {}, entity });
+            res.render('new_selector', { title, book: {}, entity });
         });
 
         router.post('/new', (req, res, next) => {
@@ -197,7 +197,7 @@
 
                     const errors = error.errors;
 
-                    res.render('new', { detail, book: bookData, errors, title: 'New Book', entity });
+                    res.render('new_selector', { detail, book: bookData, errors, title: 'New Book', entity });
                 }
             }).catch(error => {
                 res.status(500).send(error);
@@ -229,7 +229,7 @@
 
                 const title = `Return ${ loanedBook.Book.title }`;
 
-                res.render('return_book', { today, title, loanedBook });
+                res.render('return', { today, title, loanedBook });
             });
         });
 
@@ -269,7 +269,7 @@
                 }
 
                 if (errors.length) {
-                    res.render('return_book', { errors, title, today, loanedBook });
+                    res.render('return', { errors, title, today, loanedBook });
                 } else {
                     loan.update({
                         returned_on: req.body.returned_on
@@ -342,7 +342,7 @@
 
                 const title = `Book: ${ book.title }`;
 
-                res.render('detail', { entity, detail, title, book, columns, loanedBooks });
+                res.render('detail_selector', { entity, detail, title, book, columns, loanedBooks });
 
             }).catch(error => {
                 res.status(500).send(error);
@@ -409,7 +409,7 @@
                         "Returned On"
                     ];
 
-                    res.render('detail', { detail, columns, loanedBooks, book, errors: error.errors, title, entity });
+                    res.render('detail_selector', { detail, columns, loanedBooks, book, errors: error.errors, title, entity });
                 } else {
                     throw error;
                 }

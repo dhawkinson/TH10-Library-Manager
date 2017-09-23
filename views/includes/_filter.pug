@@ -1,0 +1,6 @@
+h2= title
+if entity !== 'patron'
+    p Filters 
+        a(href=`/${entity}?page=1`) All
+        a(href=`/${entity}?page=1&filter=checked_out`) Checked Out
+        a(href=`/${entity}?page=1&filter=overdue`) Overdue

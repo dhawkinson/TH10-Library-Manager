@@ -4,89 +4,87 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Play', sans-serif;
-    /*background: url(/static/images/library.jpg) no-repeat fixed center;
-    background-size: cover;*/
+    background: url(/static/images/library.jpg) no-repeat fixed center;
+    background-size: cover;
     color: #042356
 }
 
-.grid {
+/*.grid {
     width: 95%;
     margin: 0 auto 0 auto;
-}
+}*/
 
 .header,
-.worksurface {
+.card {
     background-color: #FFFFFF;
     opacity: .75;
+    margin: 0 auto 0 auto;
     border-radius: 10px;
 }
 
 .header {
     grid-area: headspace;
+    width: 95%;
 }
 
-.gap {
-    grid-area: "gap";
-}
-
-.worksurface {
-    grid-area: workspace
+.card {
+    padding: 0 1em;
 }
 
 .logo {
-    grid-area: brand;
+    grid-area: logo;
 }
 
 .app-title {
-    grid-area: app-title;
+    grid-area: appTitle;
 }
 
 .head-books {
-    grid-area: head-books
+    grid-area: headBooks;
 }
 
 .head-patrons {
-    grid-area: head-patrons
+    grid-area: headPatrons;
 }
 
 .head-loans {
-    grid-area: head-loans
+    grid-area: headLoans;
 }
 
-.nav-book-new {
-    grid-area: nav-book-new
+.book-new {
+    grid-area: bookNew;
 }
 
-.nav-book-detail {
-    grid-area: nav-book-detail
+.book-list-all {
+    grid-area: bookListing;
 }
 
-.nav-book-list {
-    grid-area: nav-book-list
+.book-detail {
+    grid-area: bookDetail;
 }
 
-.nav-patron-new {
-    grid-area: nav-patron-new
+.patron-new {
+    grid-area: patronNew;
 }
 
-.nav-patron-detail {
-    grid-area: nav-patron-detail
+.patron-list-all {
+    grid-area: patronListing;
 }
 
-.nav-patron-list {
-    grid-area: nav-patron-list
+.patron-detail {
+    grid-area: patronDetail;
 }
 
-.nav-loan-new {
-    grid-area: nav-loan-new
+.loan-new {
+    grid-area: loanNew;
 }
 
-.nav-loan-return {
-    grid-area: nav-loan-return
+.loan-list-all {
+    grid-area: loanListing;
 }
 
-.nav-loan-list {
-    grid-area: nav-loan-list
+.loan-return {
+    grid-area: loanReturn;
 }
 
 .work-title {
@@ -97,23 +95,9 @@ body {
     grid-area: workarea;
 }
 
-[class^='head-'] {
-    text-align: right;
-}
-
 [class^='head-'] h2 {
     margin: 0;
     padding: 0;
-}
-
-[class^='nav-'] {
-    width:10%
-    padding-left: 2em;
-}
-
-[class^='nav-patron'] {
-    padding-top: .5em;
-    padding-bottom: .25em;
 }
 
 a {
@@ -121,14 +105,73 @@ a {
     color: #0065A4;
     padding-left: 1.5em;
 }
-h2.work-title {
-    text-align: center;
-    padding: 0;
-    margin: .5em;
+
+.gap {
+    width: 100%;
+    height: 10px;
 }
 
-.separator {
-    width:100%;
-    margin: 0;
+[id*='-form'] h2 {
+    text-align: center;
+}
+
+.card {
+    width: 60%;
+    padding: 1em;
+    margin: auto;
+}
+
+.card table {
+    padding: 1em;
+    margin: auto;
+}
+
+.input-set {
+    display: flex;
+    flex-flow: row nowrap;
+    /*justify-content:space-between;*/
+}
+
+label, input {
+    flex: 0 1 auto;
+}
+
+label {
+    width: 40%;
+    text-align: right;
+    padding-right: 1em;
+}
+
+input[type='text'] {
+    width: 40%;
+    text-align: left;
+}
+
+th {
+    text-align: left;
+}
+
+td a {              /*  allows links to justify with heads  */
     padding: 0;
+}
+
+.pagination {
+    padding: 2em 0;
+}
+
+a.page,
+input[type='submit'] {
+    background-color: #042356;
+    border: 1px solid #042356;
+    border-radius: 5px;
+    color: white;
+    padding: .5em 1em;
+    margin: 0 auto;
+}
+
+.page {
+    display: inline;
+    text-decoration: none;
+    text-align: center;
+    margin: 0 auto;
 }

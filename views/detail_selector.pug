@@ -1,0 +1,8 @@
+extends ./layout
+block content
+    include ./includes/_head_nav
+    .card
+        h2 Loan History
+        table
+            include ./includes/_table_heads
+            include ./includes/_table_rows_loans

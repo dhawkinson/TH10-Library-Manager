@@ -130,7 +130,7 @@ For example, if the first name field is empty on the new patron form and the lib
 
 **To get an "exceeds" rating, you can expand on the project in the following ways:**
 
-*  [ ] Include pagination for the loans and books listing pages.
+*  [X] Include pagination for the loans and books listing pages.
 *  [ ] Include search fields on at least one of the books or patrons listing pages.
 *Examples:*
 *  [ ] first_name, last_name,library_id, etc for patrons

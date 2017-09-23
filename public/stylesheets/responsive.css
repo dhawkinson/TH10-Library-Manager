@@ -2,79 +2,64 @@
 @media only screen and (min-device-width : 320px) {
     /* Styles */
     body { font-size: 8px;}
+    
     .header {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-template-rows: 10% 10% 15%;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 60px 20px 15px 15px 15px 15px 15px 15px;
         grid-template-areas:
-        "brand        brand          brand             brand"
-        "app-title    app-title      app-title         app-title"
-        "head-books   nav-book-new   nav-book-detail   nav-book-list"
-        "head-patrons nav-patron-new nav-patron-detail nav-patron-list"
-        "head-loans   nav-loan-new   nav-loan-return   nav-loan-list"
-        ;
-    }
-    
-    .workspace {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr 15fr;
-        grid-template-areas:
-            "worktitle"
-            "workarea"
+            "brand       brand         brand"
+            "appTitle    appTitle      appTitle"
+            "headBooks   headPatrons   headLoans"
+            "bookNew     patronNew     loanNew"
+            "bookListAll patronListAll loanListAll"
+            "bookListCO  .             loanListCO"
+            "bookListOD  .             loanListOD"
+            "bookDetail  patronDetail  loanReturn"
             ;
     }
     
-    .brand {
+    .logo {
         justify-self: center;
         align-self: center;
         height: 50px;
         width: 50px;
     }
     
-    .app-title {
+    .appTitle {
         justify-self: center;
         align-self: center;
     }
     
-    [class^="head-"] {
-        justify-self: end;
-        align-self: center;
-    }
-    
-    [class^="nav-"] {
+    [class^='head-'] {
         justify-self: start;
-        align-self: center;
     }
     
-    [class*='nav-patron'] {
-        padding-top: .75em;
-        padding-bottom: .75em;
-    }
-
-    .workspace {
-        display: grid
+    [class^='nav-'] {
+        justify-self: start;
     }
 }
 
 /* Desktops and laptops ----------- */
 @media only screen  and (min-width : 901px) {
     /* Styles */
+    body { font-size: 12px;}
+
     .header {
         display: grid;
-        grid-template-columns: 60px 6fr 2fr repeat(3, 80px);
-        grid-template-rows: 20px 20px 20px;
+        grid-template-columns: 80px 6fr repeat(3, 130px);
+        grid-template-rows: 25px 25px 25px 25px 25px;
         grid-template-areas:
-        "brand app-title head-books   nav-book-new   nav-book-detail   nav-book-list"
-        "brand app-title head-patrons nav-patron-new nav-patron-detail nav-patron-list"
-        "brand app-title head-loans   nav-loan-new   nav-loan-return   nav-loan-list"
-        ;
-        width: 100%;
-        padding: .5em;
-        margin: 0 auto;
+            "brand appTitle headBooks   headPatrons   headLoans"
+            "brand appTitle bookNew     patronNew     loanNew"
+            "brand appTitle bookListAll patronListAll loanListAll"
+            "brand appTitle bookListCO  .             loanListCO"
+            "brand appTitle bookListOD  .             loanListOD"
+            "brand appTitle bookDetail  patronDetail  loanReturn"
+            ;
     }
 
-    .brand {
+    .logo {
         justify-self: center;
         align-self: start;
         width: 60px;
@@ -86,79 +71,53 @@
         align-self: center;
     }
     
-    .navs {
+    [class^='head-'] {
         justify-self: start;
-        align-self: start;
     }
     
-    [class*='nav-patron'] {
-        padding-top: .75em;
-        padding-bottom: .75em;
-    }
-
-    .workspace {
-        display: grid
+    [class^='nav-'] {
+        justify-self: start;
     }
 }
 
 /* Large Monitors ----------- */
 @media only screen  and (min-width : 1211px) {
     /* Styles */
-    body { font-size: 1em;}
-
-    .grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr 5px 8fr;
-        grid-template-areas: 
-            "headspace"
-            "gap"
-            "workspace"
-            ;
-    }
+    body { font-size: 16px;}
 
     .header {
         display: grid;
-        grid-template-columns: 80px 6fr 2fr repeat(3, 110px);
+        grid-template-columns: 80px 2fr 1fr 55px 90px;
         grid-template-rows: 25px 25px 25px;
         grid-template-areas:
-            "brand app-title head-books   nav-book-new   nav-book-detail   nav-book-list"
-            "brand app-title head-patrons nav-patron-new nav-patron-detail nav-patron-list"
-            "brand app-title head-loans   nav-loan-new   nav-loan-return   nav-loan-list"
+            "logo appTitle headBooks   bookNew   bookListing"
+            "logo appTitle headPatrons patronNew patronListing"
+            "logo appTitle headLoans   loanNew   loanListing"
             ;
+        padding: .75em 0;
     }
     
-    .brand {
+    .logo {
         height: 70px;
         width: 70px;
+        justify-self: center;
+        align-self: center;
     }
     
     .app-title {
-        justify-self: start;
+        justify-self: center;
+        align-self: center;
     }
-    
+
     [class^='head-'] {
         justify-self: end;
+        align-self: center;
     }
-    
-    [class^='nav-'] {
+
+    [class^='book-'],
+    [class^='patron-'],
+    [class^='loan-'] {
         justify-self: start;
-    }
-
-    }
-    
-    [class*='nav-patron'] {
-        padding-top: .75em;
-        padding-bottom: .75em;
-    }
-
-    .workspace {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr 15fr;
-        grid-template-areas:
-            "worktitle"
-            "workarea"
-            ;
+        align-self: center;
     }
 }
