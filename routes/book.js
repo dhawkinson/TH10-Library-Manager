@@ -15,7 +15,7 @@
     let entity      = 'book';
     let subent      = '';
 
-    let detail;
+    let bookDetail;
     let currPage;
     let filter;
     let search;
@@ -35,7 +35,7 @@
             res.redirect('/books');
         }).catch(error => {
             if (error.name === "SequelizeValidationError") {
-                detail = false;
+                bookDetail = false;
                 const book = Book.build(req.body);
 
                 const bookData = book.get({
@@ -44,7 +44,7 @@
 
                 const errors = error.errors;
 
-                res.render('new_selector', { detail, book: bookData, errors, title: 'New Book', entity });
+                res.render('new_selector', { bookDetail, book: bookData, errors, title: 'New Book', entity });
             }
         }).catch(error => {
             res.status(500).send(error);
@@ -331,7 +331,7 @@
                 loanData
             ]).then(data => {
 
-                detail = true;
+                bookDetail = true;
 
                 const columns = [
                     "Book",
@@ -353,7 +353,7 @@
 
                 const title = `Book: ${ book.title }`;
 
-                res.render('detail_selector', { entity, detail, title, book, columns, loanedBooks });
+                res.render('detail_selector', { entity, bookDetail, title, book, columns, loanedBooks });
 
             }).catch(error => {
                 res.status(500).send(error);
@@ -398,7 +398,7 @@
             }).catch(error => {
                 if (error.name === "SequelizeValidationError") {
 
-                    detail = true;
+                    bookDetail = true;
 
                     const book = data[0].get({
                         plain: true
@@ -420,7 +420,7 @@
                         "Returned On"
                     ];
 
-                    res.render('detail_selector', { detail, columns, loanedBooks, book, errors: error.errors, title, entity });
+                    res.render('detail_selector', { bookDetail, columns, loanedBooks, book, errors: error.errors, title, entity });
                 } else {
                     throw error;
                 }

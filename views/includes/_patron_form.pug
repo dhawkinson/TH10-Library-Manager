@@ -1,6 +1,6 @@
 .card#patron-form
     h2 New/Update Patron
-    form
+    form(action=`${ patronDetail ? `/${ entity }/${patronDetails.id}/${ patronDetails.first_name }_${ patronDetails.last_name }` : `/${ entity }/new`}`, method="post")
         p.input-set
             label(for='first_name' class="label") First Name
             input#first_name(type='text' class="input")

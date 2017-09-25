@@ -1,6 +1,6 @@
 .card#book-form
     h2 New/Update Book
-    form(action=`${ detail ? `/${ entity }/${ book.id }/${ book.title.replace(/ /g, '_') }` : `/${entity}/new` }`, method="post")
+    form(action=`${ bookDetail ? `/${ entity }/${ book.id }/${ book.title.replace(/ /g, '_') }` : `/${entity}/new` }`, method="post")
         p.input-set
             label(for='title') Title
             input#title(type='text')

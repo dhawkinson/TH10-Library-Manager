@@ -6,25 +6,29 @@
         up: function(queryInterface, Sequelize) {
             return queryInterface.createTable('Loans', {
                 id: {
-                    allowNull: false,
-                    autoIncrement: true,
+                    type: Sequelize.INTEGER,
                     primaryKey: true,
-                    type: Sequelize.INTEGER
+                    autoIncrement: true
                 },
                 book_id: {
-                    type: Sequelize.INTEGER
+                    type: Sequelize.INTEGER,
+                    allowNull: false
                 },
                 patron_id: {
-                    type: Sequelize.INTEGER
+                    type: Sequelize.INTEGER,
+                    allowNull: false
                 },
                 loaned_on: {
-                    type: Sequelize.DATE
+                    type: Sequelize.DATE,
+                    allowNull: false
                 },
                 return_by: {
-                    type: Sequelize.DATE
+                    type: Sequelize.DATE,
+                    allowNull: false
                 },
                 returned_on: {
-                    type: Sequelize.DATE
+                    type: Sequelize.DATE,
+                    allowNull: true
                 }
             });
         },

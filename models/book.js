@@ -5,17 +5,8 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notEmpty: {
+                isNotNull: {
                     msg: 'Book Title is required.'
-                },
-            }
-        },
-        genre: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notEmpty: {
-                    msg: 'Genre is required.'
                 },
             }
         },
@@ -23,8 +14,17 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notEmpty: {
+                isNotNull: {
                     msg: 'Author is required'
+                },
+            }
+        },
+        genre: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                isNotNull: {
+                    msg: 'Genre is required.'
                 },
             }
         },

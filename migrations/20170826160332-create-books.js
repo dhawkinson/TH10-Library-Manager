@@ -6,22 +6,25 @@
         up: function(queryInterface, Sequelize) {
             return queryInterface.createTable('Books', {
                 id: {
-                    allowNull: false,
-                    autoIncrement: true,
+                    type: Sequelize.INTEGER,
                     primaryKey: true,
-                    type: Sequelize.INTEGER
+                    autoIncrement: true
                 },
                 title: {
-                    type: Sequelize.STRING
+                    type: Sequelize.STRING,
+                    allowNull: false
                 },
                 author: {
-                    type: Sequelize.STRING
+                    type: Sequelize.STRING,
+                    allowNull: false
                 },
                 genre: {
-                    type: Sequelize.STRING
+                    type: Sequelize.STRING,
+                    allowNull: false
                 },
                 first_published: {
-                    type: Sequelize.INTEGER
+                    type: Sequelize.INTEGER,
+                    allowNull: true
                 }
             });
         },

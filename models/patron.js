@@ -5,7 +5,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notEmpty: {
+                isNotNull: {
                     msg: 'First Name is required.'
                 }
             }
@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notEmpty: {
+                isNotNull: {
                     msg: 'Last Name is required'
                 }
             }
@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notEmpty: {
+                isNotNull: {
                     msg: 'Address is required.'
                 }
             }
@@ -32,7 +32,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notEmpty: {
+                isNotNull: {
                     msg: 'Email is required.'
                 },
                 isEmail: {
@@ -44,7 +44,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notEmpty: {
+                isNotNull: {
                     msg: 'Library Id is required.'
                 }
             }
@@ -53,12 +53,12 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: false,
             validate: {
+                isNotNull: {
+                    msg: 'Zip Code is required'
+                },
                 not: {
                     args: /[a-zA-Z!@#$%\^&*()_+=[\]{}:;'".,/\\?`~\-<>]/gim,
                     msg: 'Zip code must contain only numbers, 0-9'
-                },
-                notEmpty: {
-                    msg: 'Zip Code is required'
                 }
             }
         }
