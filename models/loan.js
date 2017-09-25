@@ -26,22 +26,12 @@ module.exports = function(sequelize, DataTypes) {
                 isNotNull: {
                     msg: 'Loaned On Date is required.'
                 },
-                is: {
-                    args: /^(\d{4})-((02-(0[1-9]|[12]\d))|((0[469]|11)-(0[1-9]|[12]\d|30))|((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])))$/ig,
-                    msg: 'Loaned On Date must be in the format; YYYY-MM-DD'
-                },
                 isDate: {
                     msg: 'Loaned On Date must be a valid date in the format; YYYY-MM-DD'
                 },
                 isAfter: {
                     args: yesterday,
                     msg: 'Loaned On Date must be later than yesterday.'
-                },
-                isNotSpecial(value) {
-                    const special = /[!@#$%^&*()_+=<>,.'";:`~]+/ig;
-                    if (value.match(special)) {
-                        throw new Error('Loaned On Date must NOT contain special characters');
-                    }
                 }
             }
         },
@@ -51,20 +41,14 @@ module.exports = function(sequelize, DataTypes) {
                 isNotNull: {
                     msg: 'Return By Date is required.'
                 },
-                is: {
-                    args: /^(\d{4})-((02-(0[1-9]|[12]\d))|((0[469]|11)-(0[1-9]|[12]\d|30))|((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])))$/ig,
-                    msg: 'Return By Date must be in the format; YYYY-MM-DD'
-                },
-                not: {
-                    args: /[!@#$%^&*()_+=<>,.'";:`~]/ig,
-                    msg: 'Return By Date must be a valid date in the format; YYYY-MM-DD'
+                isDate: {
+                    msg: 'Return By Date must be in the correct format. ex. YYYY-MM-DD'
                 },
                 isAfter: {
-                    args: loaned_on.add(6,'days').format('YYYY[-]MM[-]DD'),
+                    Instance:prototype.getDataValue = function(loaned_on) {
+                        return this.dataValues[loaned_on].add(6, 'days').format('YYYY[-]MM[-]DD');
+                    },
                     msg: 'Return By Date must be at least a week after Loaned By Date'
-                },
-                isDate: {
-                    msg: 'Return By Date must be in the correct format. ex. 2017-07-08'
                 }
             }
         },
