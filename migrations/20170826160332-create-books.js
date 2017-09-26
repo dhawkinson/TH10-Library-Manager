@@ -4,7 +4,7 @@
     // still maintains access to all globals
     module.exports = {
         up: function(queryInterface, Sequelize) {
-            return queryInterface.createTable('Books', {
+            return queryInterface.createTable('books', {
                 id: {
                     type: Sequelize.INTEGER,
                     primaryKey: true,
@@ -29,7 +29,7 @@
             });
         },
         down: function(queryInterface, Sequelize) {
-            return queryInterface.dropTable('Books');
+            return queryInterface.dropTable('books');
         }
     };
 }());

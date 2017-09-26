@@ -4,7 +4,7 @@
     // still maintains access to all globals
     module.exports = {
         up: function(queryInterface, Sequelize) {
-            return queryInterface.createTable('Loans', {
+            return queryInterface.createTable('loans', {
                 id: {
                     type: Sequelize.INTEGER,
                     primaryKey: true,

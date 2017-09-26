@@ -14,7 +14,8 @@
     
     //  GET response for "new patron" request
     router.get('/new', (req, res, next) => {
-        res.render('new_selector', { entity, patronProperties: {} });
+        const title = 'New Patron';
+        res.render('new_selector', { title, patronProperties: {}, entity });
     });
     
     router.post('/new', (req, res, next) => {
