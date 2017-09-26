@@ -97,7 +97,7 @@ As a librarian, I should be able to filter loans by “All”, “Overdue”, an
 
 *  [x] return checked out or overdue books.
 *  [x] each book in the loan history.
-*  [ ] each patron in the loan history.
+*  [x] each patron in the loan history.
 
 ##New Loan Page: 
 
@@ -105,7 +105,7 @@ As a librarian, I should be able to check out a book so I can lend books to patr
 
 
 * [x] The book field should be a **select box** where you can select the book_id.
-* [ ] The patron field should be a **select box** where you can select the patron_id.
+* [x] The patron field should be a **select box** where you can select the patron_id.
 * [x] The loaned_on field should be auto populated with today’s date. Example: 2016-10-20. 
 * [x] The returned by date should also be pre-populated with a date 7 days in the future, for example: 2016-10-27.
 
