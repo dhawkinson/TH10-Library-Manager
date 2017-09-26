@@ -8,7 +8,7 @@
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    isNotNull: {
+                    notEmpty: {
                         msg: 'First Name is required.'
                     }
                 }
@@ -17,7 +17,7 @@
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    isNotNull: {
+                    notEmpty: {
                         msg: 'Last Name is required'
                     }
                 }
@@ -26,7 +26,7 @@
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    isNotNull: {
+                    notEmpty: {
                         msg: 'Address is required.'
                     }
                 }
@@ -35,7 +35,7 @@
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    isNotNull: {
+                    notEmpty: {
                         msg: 'Email is required.'
                     },
                     isEmail: {
@@ -47,7 +47,7 @@
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    isNotNull: {
+                    notEmpty: {
                         msg: 'Library Id is required.'
                     }
                 }
@@ -56,7 +56,7 @@
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 validate: {
-                    isNotNull: {
+                    notEmpty: {
                         msg: 'Zip Code is required'
                     },
                     not: {

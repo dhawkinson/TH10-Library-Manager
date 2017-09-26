@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+'use strict';
+
 /**
  * Module dependencies.
  */
@@ -26,9 +28,12 @@ let server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
- sequelize.sync().then(function() {
-        server.listen(port);
- });
+sequelize.sync().then(() => {
+    server.listen(port, () => {
+        const timestamp = new Date().toString();
+        console.log(`[${timestamp}] Server started on ${port}`);
+    });
+});
 
 server.on('error', onError);
 server.on('listening', onListening);

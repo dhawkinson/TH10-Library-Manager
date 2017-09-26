@@ -8,7 +8,8 @@
                 id: {
                     type: Sequelize.INTEGER,
                     primaryKey: true,
-                    autoIncrement: true
+                    autoIncrement: true,
+                    allowNull:false
                 },
                 title: {
                     type: Sequelize.STRING,

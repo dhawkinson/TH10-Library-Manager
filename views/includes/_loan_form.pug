@@ -10,16 +10,13 @@
             label(for='patron_id') Patron
             select(name='patron_id')
                 each patron in patrons
-                    option(value=patron.id)= patron.name
+                    option(value=patron.id)= patron.fullName
         p.input-set
             label(for='loaned_on') Loaned On:
             input(id="loaned_on", name="loaned_on", type="text", value=`${ today ? today : '' }`)
         p.input-set
             label(for='return_by') Return By:
             input(id="return_by", name="return_by", type="text", value=`${ weekFromToday ? weekFromToday : '' }`)
-        p.input-set
-            label(for='returned_on') Returned On:
-            input(id="returned_on", name="returned_on", type="text")
         p
             input(type='submit', value='Save Loan')
     include ./_error

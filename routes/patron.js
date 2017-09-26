@@ -1,14 +1,10 @@
 'use strict';
 (function () {
-	// ... all vars and functions are in this scope only
-    // still maintains access to all globals
     const express   = require('express');
     const router    = express.Router();
     const Patron    = require('../models').Patron;
     const Loan      = require('../models').Loan;
     const Book      = require('../models').Book;
-    
-    debugger;
 
     let entity      = 'patron';
     
@@ -19,9 +15,9 @@
     });
     
     router.post('/new', (req, res, next) => {
-        Patron.create(req.body).then(() => {
-            res.redirect('/patron');
-        }).catch(error => {
+        Patron.create(req.body)
+        .then(() => {res.redirect('/patron');})
+        .catch(error => {
             if (error.name === "SequelizeValidationError") {
                 const patron = Patron.build(req.body);
                 const patronData = patron.get({
@@ -32,7 +28,8 @@
             } else {
                 throw error;
             }
-        }).catch(error => {
+        })
+        .catch(error => {
             res.status(500).send(error);
         });
     });

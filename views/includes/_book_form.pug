@@ -3,16 +3,16 @@
     form(action=`${ bookDetail ? `/${ entity }/${ book.id }/${ book.title.replace(/ /g, '_') }` : `/${entity}/new` }`, method="post")
         p.input-set
             label(for='title') Title
-            input#title(type='text')
+            input(id="title", name="title", type="text", value=book.title)
         p.input-set
             label(for='author') Author
-            input#author(type='text')
+            input(id="author", name="author", type="text", value=book.author)
         p.input-set
             label(for='genre') Genre
-            input#genre(type='text')
+            input(id="genre", name="genre", type="text", value=book.genre)
         p.input-set
             label(for='first_published') First Published
-            input#first_published(type='text')
+            input(id="first_published", name="first_published", type="text", value=book.first_published)
         p
-            input(type='submit', value='Save Book')
+            input(type="submit", value=`${ bookDetail ? 'Update' : 'Save Book'}`)
     include ./_error

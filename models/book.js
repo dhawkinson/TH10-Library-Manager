@@ -9,7 +9,7 @@
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    isNotNull: {
+                    notEmpty: {
                         msg: 'Book Title is required.'
                     },
                 }
@@ -18,7 +18,7 @@
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    isNotNull: {
+                    notEmpty: {
                         msg: 'Author is required'
                     },
                 }
@@ -27,7 +27,7 @@
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    isNotNull: {
+                    notEmpty: {
                         msg: 'Genre is required.'
                     },
                 }

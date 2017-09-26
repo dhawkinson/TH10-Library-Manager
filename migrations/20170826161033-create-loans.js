@@ -8,7 +8,8 @@
                 id: {
                     type: Sequelize.INTEGER,
                     primaryKey: true,
-                    autoIncrement: true
+                    autoIncrement: true,
+                    allowNull: false
                 },
                 book_id: {
                     type: Sequelize.INTEGER,

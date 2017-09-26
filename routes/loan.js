@@ -14,8 +14,6 @@
     const Patron        = require('../models').Patron;
     
     let entity          = 'loan';
-    let subent          = '';
-
     
     
     let currPage;
@@ -107,7 +105,7 @@
                 res.render('new_selector', { today, weekFromToday, books, patrons, errors, title: 'New Loan', entity });
             } else {
                 Loan.create(req.body).then(() => {
-                    res.redirect('/loans');
+                    res.redirect('/loan');
                 }).catch(error => {
                     if (error.name === 'SequelizeValidationError') {
                         res.render('new_selector', { today, weekFromToday, books, patrons, errors: error.errors, title: 'New Loan', entity });
@@ -123,7 +121,7 @@
     router.get('/', (req, res, next) => {
     
         if (req.query.page === undefined && req.query.filter === undefined) {
-            res.redirect('/loans?page=1');
+            res.redirect('/loan?page=1');
         }
     
         let loanQuery = Loan.findAndCountAll({

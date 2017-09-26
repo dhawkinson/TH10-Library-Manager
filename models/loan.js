@@ -1,7 +1,5 @@
 'use strict';
-(function () {      //  use module pattern
-	// ... all vars and functions are in this scope only
-	// still maintains access to all globals
+(function () { 
     const moment    = require('moment');
     const yesterday = moment().subtract(1, 'days').format('YYYY[-]MM[-]DD');
 
@@ -10,7 +8,7 @@
             book_id: {
                 type: DataTypes.INTEGER,
                 validate: {
-                    isNotNull: {
+                    notEmpty: {
                         msg: 'Book Id is required.'
                     }
                 }
@@ -18,7 +16,7 @@
             patron_id: {
                 type: DataTypes.INTEGER,
                 validate: {
-                    isNotNull: {
+                    notEmpty: {
                         msg: 'Patron Id is required.'
                     }
                 }
@@ -26,7 +24,7 @@
             loaned_on: {
                 type: DataTypes.DATEONLY,
                 validate: {
-                    isNotNull: {
+                    notEmpty: {
                         msg: 'Loaned On Date is required.'
                     },
                     isDate: {
@@ -41,18 +39,12 @@
             return_by: {
                 type: DataTypes.DATEONLY,
                 validate: {
-                    isNotNull: {
+                    notEmpty: {
                         msg: 'Return By Date is required.'
                     },
                     isDate: {
                         msg: 'Return By Date must be in the correct format. ex. YYYY-MM-DD'
-                    }//,
-                    //isAfter: {
-                    //    Instance.prototype.getDataValue = function(loaned_on) {
-                    //        return this.dataValues[loaned_on].add(6, 'days').format('YYYY[-]MM[-]DD');
-                    //    },
-                    //    msg: 'Return By Date must be at least a week after Loaned By Date'
-                    //}
+                    }
                 }
             },
             returned_on: {

@@ -13,7 +13,6 @@
     const Patron    = require('../models').Patron;
 
     let entity      = 'book';
-    let subent      = '';
 
     let bookDetail;
     let currPage;
@@ -32,18 +31,15 @@
 
     router.post('/new', (req, res, next) => {
         Book.create(req.body).then(() => {
-            res.redirect('/books');
+            res.redirect('/book');
         }).catch(error => {
             if (error.name === "SequelizeValidationError") {
                 bookDetail = false;
                 const book = Book.build(req.body);
-
                 const bookData = book.get({
                     plain: true
                 });
-
                 const errors = error.errors;
-
                 res.render('new_selector', { bookDetail, book: bookData, errors, title: 'New Book', entity });
             }
         }).catch(error => {
@@ -55,8 +51,7 @@
     router.get('/', (req, res, next) => {
 
         if (req.query.page === undefined && req.query.filter === undefined) {
-            res.redirect('/books?page=1');
-            //req.query.page = 1;
+            res.redirect('/book?page=1');
         }
 
         let bookQuery;
@@ -189,7 +184,6 @@
         router.post('/', (req, res, next) => {
 
             if (req.query.page === undefined && req.query.filter === undefined) {
-                //     res.redirect('/books?page=1');
                 req.query.page = 1;
             }
 
@@ -211,7 +205,7 @@
                 limit: 10,
                 offset: (req.query.page * 10) - 10,
             }).then(books => {
-                res.redirect(`/books?page=1&search=true&title=${ req.body.title ? req.body.title : '' }&author=${ req.body.author ? req.body.author : ''}&genre=${ req.body.genre ? req.body.genre : ''}&first_published=${ req.body.first_published ? req.body.first_published : ''}`);
+                res.redirect(`/book?page=1&search=true&title=${ req.body.title ? req.body.title : '' }&author=${ req.body.author ? req.body.author : ''}&genre=${ req.body.genre ? req.body.genre : ''}&first_published=${ req.body.first_published ? req.body.first_published : ''}`);
             });
         });
 
@@ -285,7 +279,7 @@
                     loan.update({
                         returned_on: req.body.returned_on
                     }).then(() => {
-                        res.redirect('/loans');
+                        res.redirect('/loan');
                     });
                 }
             });
@@ -297,7 +291,7 @@
                     id: req.params.id
                 },
             }).then(book => {
-                res.redirect(`/books/${req.params.id}/${book[0].dataValues.title.replace(/ /g, '_')}`);
+                res.redirect(`/book/${req.params.id}/${book[0].dataValues.title.replace(/ /g, '_')}`);
             }).catch(error => {
 
             });
@@ -394,7 +388,7 @@
                     id: req.params.id
                 }
             }).then(() => {
-                res.redirect('/books');
+                res.redirect('/book');
             }).catch(error => {
                 if (error.name === "SequelizeValidationError") {
 
