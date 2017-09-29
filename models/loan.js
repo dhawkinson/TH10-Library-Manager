@@ -48,7 +48,8 @@
                 }
             },
             returned_on: {
-                type: DataTypes.DATEONLY
+                type: DataTypes.DATEONLY,
+                allowNull: true
             }
         });
         Loan.associate = function(models) {

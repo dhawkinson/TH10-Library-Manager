@@ -1,0 +1,16 @@
+.book-search
+    form(action=`/book?page=1&search=true&title=${ req.body.title ? req.body.title : '' }&author=${ req.body.author ? req.body.author : ''}&genre=${ req.body.genre ? req.body.genre : ''}&first_published=${ req.body.first_published ? req.body.first_published : ''}` method="post")
+        p
+            label(for='title') Title
+            input#title(type='text')
+        p
+            label(for='author') Author
+            input#author(type='text')
+        p
+            label(for='genre') Genre
+            input#genre(type='text')
+        p
+            label(for='first_published') First Published
+            input#first_published(type='text')
+        p
+            input(type='submit', value='Search')

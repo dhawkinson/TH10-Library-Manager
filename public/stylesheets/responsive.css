@@ -6,7 +6,7 @@
     .header {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 60px 20px 15px 15px 15px 15px 15px 15px;
+        grid-template-rows: 60px repeat(6, 12px);
         grid-template-areas:
             "brand       brand         brand"
             "appTitle    appTitle      appTitle"
@@ -15,8 +15,15 @@
             "bookListAll patronListAll loanListAll"
             "bookListCO  .             loanListCO"
             "bookListOD  .             loanListOD"
-            "bookDetail  patronDetail  loanReturn"
             ;
+        justify-content: space-around;
+    }
+    .gap {
+        height: 5px;
+    }
+    
+    .card {
+        width: 95%;        
     }
     
     .logo {
@@ -47,8 +54,8 @@
 
     .header {
         display: grid;
-        grid-template-columns: 80px 6fr repeat(3, 130px);
-        grid-template-rows: 25px 25px 25px 25px 25px;
+        grid-template-columns: 70px 2fr 130px 100px 130px;
+        grid-template-rows: repeat(5, 15px);
         grid-template-areas:
             "brand appTitle headBooks   headPatrons   headLoans"
             "brand appTitle bookNew     patronNew     loanNew"
@@ -88,7 +95,7 @@
     .header {
         display: grid;
         grid-template-columns: 80px 2fr 150px 120px 150px;
-        grid-template-rows: 25px 25px 25px;
+        grid-template-rows: repeat(5,20px);
         grid-template-areas:
             "logo appTitle headBooks    headPatrons    headLoans"
             "logo appTitle bookNew      patronNew      loanNew"
@@ -97,6 +104,10 @@
             "logo appTitle listBooksOD  .              listLoansOD"
             ;
         padding: .75em 0;
+    }
+
+    .card {
+        width: 60%;        
     }
     
     .logo {

@@ -1,7 +1,5 @@
 'use strict';
-(function () {      //  use module pattern
-	// ... all vars and functions are in this scope only
-	// still maintains access to all globals
+(function () { 
     module.exports = function(sequelize, DataTypes) {
         let Patron = sequelize.define('Patron', {
             first_name: {

@@ -1,24 +1,24 @@
 .card#patron-form
-    h2 New/Update Patron 
-    form(action=`${ patronDetail ? `/${ entity }/${patronProperties.id}/${ patronProperties.first_name }_${ patronProperties.last_name }` : `/${ entity }/new`}`, method="post")
+    h2= title
+    form(action=`${ patronDetail ? `/${ entity }/${patronRow.id}/${ patronRow.first_name }_${ patronRow.last_name }` : `/${ entity }/new`}`, method="post")
         p.input-set
             label(for="first_name") First Name 
-            input(id="first_name", name="first_name", type="text", value=patronProperties.first_name)
+            input(id="first_name", name="first_name", type="text", value=patronRow.first_name)
         p.input-set 
             label(for="last_name") Last Name 
-            input(id="last_name", name="last_name", type="text", value=patronProperties.last_name)
+            input(id="last_name", name="last_name", type="text", value=patronRow.last_name)
         p.input-set
             label(for="address") Address 
-            input(id="address", name="address", type="text", value=patronProperties.address)
+            input(id="address", name="address", type="text", value=patronRow.address)
         p.input-set
             label(for="email") Email 
-            input(id="email", name="email", type="text", value=patronProperties.email)
+            input(id="email", name="email", type="text", value=patronRow.email)
         p.input-set 
             label(for="library_id") Library ID 
-            input(id="library_id", name="library_id", type="text", value=patronProperties.library_id)
+            input(id="library_id", name="library_id", type="text", value=patronRow.library_id)
         p.input-set
             label(for="zip_code") Zip Code 
-            input(id="zip_code", name="zip_code", type="text", value=patronProperties.zip_code)
+            input(id="zip_code", name="zip_code", type="text", value=patronRow.zip_code)
         p
             input(type="submit" value=`${ patronDetail ? 'Update' : 'Save Patron'}`)
     include ./_error

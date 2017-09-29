@@ -1,8 +1,5 @@
 'use strict';
 (function () { 
-    //
-    //  The Book model
-    //
     module.exports = function(sequelize, DataTypes) {
         let Book = sequelize.define('Book', {
             title: {

@@ -2,8 +2,7 @@ extends ./layout
 block content
     include ./includes/_head_nav
     .card
-        include ./includes/_error
-        h1= title
+        h2= title
         p
             strong Book Title: #{ loanedBook.Book.title } 
         p
@@ -18,3 +17,4 @@ block content
                 input(type="text", id="returned_on", name="returned_on", value=`${ today }`)
             p
                 input(type="submit", value="Return Book")
+        include ./includes/_error

@@ -1,7 +1,5 @@
 'use strict';
-(function () {      //  use module pattern
-	// ... all vars and functions are in this scope only
-    // still maintains access to all globals
+(function () { 
     module.exports = {
         up: function(queryInterface, Sequelize) {
             return queryInterface.createTable('books', {

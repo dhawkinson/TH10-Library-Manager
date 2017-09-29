@@ -1,7 +1,16 @@
 - var page = 1;
 
 .pagination
-    if count > 1
-        while page <= count
-            a.button(href=`/${ entity }?page=${ page }${ search ? `&search=${ search }&title=${ search_title }&author=${ author }&genre=${ genre }&first_published=${ first_published }` : ''}${ filter ? `&filter=${filter}` : ''}` class="page")= page++ 
-
+    if pgCount > 1
+        while page <= pgCount
+            // example of how this anchor tag reconciles (it is a conditional [ternary])
+            // first - with no search or filter
+            //      /book?page=1
+            // then - with a search and no filter
+            //      /book?page=1&search=true&title=titlexyz&author=authorxyz&genre=genrexyz&first_published=9999
+            // last - with a search and a filter (All/Checked Out/Overdue)
+            //      /book?page=1&search=true&title=titlexyz&author=authorxyz&genre=genrexyz&first_published=9999&filter=All
+            if entity !== 'patron'
+                a.button(href=`/${ entity }?page=${ page }${ search ? `&search=${ search }&title=${ search_title }&author=${ author }&genre=${ genre }&first_published=${ first_published }` : ''}${ filter ? `&filter=${filter}` : ''}` class="page")= page++ 
+            else
+                a.button(href=`/${ entity }?page=${ page }${ search ? `&search=${ search }&last_name=${ search_last_name }&first_name=${ search_first_name }&library_id=${ search_library_id }${ filter ? `&filter=${filter}` : ''}` class="page")= page++ 

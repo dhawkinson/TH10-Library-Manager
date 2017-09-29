@@ -15,27 +15,36 @@
     
     let entity          = 'loan';
     
-    
     let currPage;
     let filter;
     
-    // GET new loan creator
-    router.get('/new', (req, res, next) => {
+    // ==========================================================================
+    //  ROUTER STRUCTURE
+    //      1. New Loan processing
+    //      2. Loan queries/listings
+    //      3. Loan return processing
+    // ==========================================================================
     
+    //  1. GET response for "new loan" request
+    //  =========================================================================
+    router.get('/new', (req, res, next) => {
+        
+        //  gather the books for the drop down selector
         const books = Book.findAll({
             attributes: [
                 ['id', 'id'],
                 ['title', 'title']
             ]
         });
-    
+        
+        //  gather the patron for the drop down selector
         const patrons = Patron.findAll({
             attributes: [
                 ['id', 'id'],
                 [Patron.sequelize.literal('first_name || " " || last_name'), 'name'],
             ]
         });
-    
+        // data is gathered - render the form
         Promise.all([books, patrons]).then(data => {
             const books = data[0].map(book => {
                 return Object.assign({}, {
@@ -53,11 +62,20 @@
     
             const loanedOn = today;
             const returnBy = weekFromToday;
+            const title    = "New Loan";
     
-            res.render('new_selector', { entity, books, patrons, today, weekFromToday });
+            res.render('new_selector', { 
+                entity,
+                title, 
+                books, 
+                patrons, 
+                today, 
+                weekFromToday 
+            });
         });
     });
     
+    // POST the new loan
     router.post('/new', (req, res, next) => {
     
         const books = Book.findAll({
@@ -94,7 +112,7 @@
             });
     
             if (special.test(req.body.loaned_on)) {
-                errors.push(new Error('The return by date must be in the correct format. ex. 2017-07-08'));
+                errors.push(new Error('The loaned on date must be in the correct format. ex. 2017-07-08'));
             }
     
             if (special.test(req.body.return_by)) {
@@ -102,10 +120,19 @@
             }
     
             if (errors.length) {
-                res.render('new_selector', { today, weekFromToday, books, patrons, errors, title: 'New Loan', entity });
+                // there are errors so errors are passed
+                res.render('new_selector', { 
+                    entity,
+                    title,
+                    books, 
+                    patrons, 
+                    today, 
+                    weekFromToday,
+                    errors 
+                });
             } else {
                 Loan.create(req.body).then(() => {
-                    res.redirect('/loan');
+                    res.redirect('/loan/new');
                 }).catch(error => {
                     if (error.name === 'SequelizeValidationError') {
                         res.render('new_selector', { today, weekFromToday, books, patrons, errors: error.errors, title: 'New Loan', entity });
@@ -116,15 +143,27 @@
             }
         });
     });
-
-    //  GET loan listings  
-    router.get('/', (req, res, next) => {
     
+    //
+    //  identification of query parameters
+    //
+    //      loanQuery           = the resuting query and is conditionally built
+    //      req.query.page      = a requested page number (may be undefined)
+    //      req.query.filter    = the requested lisitng filter (All/Checked Out/Overdue)
+    //      req.query.search    = the indicator that a specific search is called for
+    //    
+
+    //  2. Set Up the Loan Queries (listings)
+    //  =========================================================================
+    router.get('/', (req, res, next) => {
+        // no page selected - so page = 1
         if (req.query.page === undefined && req.query.filter === undefined) {
             res.redirect('/loan?page=1');
         }
+
+        let loanQuery;
     
-        let loanQuery = Loan.findAndCountAll({
+        loanQuery = Loan.findAndCountAll({
             where: [{
                 loaned_on: {
                     $not: null
@@ -134,8 +173,6 @@
                 ['patron_id', 'ASC'],
                 ['returned_on', 'ASC']
             ],
-            limit: 10,
-            offset: (req.query.page * 10) - 10,
             include: [{
                 model: Book,
                 attributes: [
@@ -149,7 +186,9 @@
                     ['first_name', 'first_name'],
                     ['last_name', 'last_name'],
                 ]
-            }]
+            }],
+            limit: 10,
+            offset: (req.query.page * 10) - 10
         });
     
         if (req.query.filter === 'checked_out') {
@@ -164,8 +203,6 @@
                     ['patron_id', 'ASC'],
                     ['returned_on', 'ASC']
                 ],
-                limit: 10,
-                offset: (req.query.page * 10) - 10,
                 include: [{
                     model: Book,
                     attributes: [
@@ -179,7 +216,9 @@
                         ['first_name', 'first_name'],
                         ['last_name', 'last_name'],
                     ]
-                }]
+                }],
+                limit: 10,
+                offset: (req.query.page * 10) - 10
             });
         }
         
@@ -198,8 +237,6 @@
                     ['patron_id', 'ASC'],
                     ['returned_on', 'ASC']
                 ],
-                limit: 10,
-                offset: (req.query.page * 10) - 10,
                 include: [{
                     model: Book,
                     attributes: [
@@ -213,20 +250,14 @@
                         ['first_name', 'first_name'],
                         ['last_name', 'last_name'],
                     ]
-                }]
+                }],
+                limit: 10,
+                offset: (req.query.page * 10) - 10
             });
         }
     
-        loanQuery.then(loans => {
-            const columns = [
-                "Book",
-                "Patron",
-                "Loaned On",
-                "Return By",
-                "Returned On"
-            ];
-    
-            const count = Math.ceil(loans.count / 10);
+        loanQuery
+        .then(loans => {
     
             currPage = req.query.page;
             if ( req.query.filter === 'checked_out' ) {
@@ -238,16 +269,37 @@
             else { 
                 filter = 'All'
             }
+
+            const columns = [
+                "Book",
+                "Patron",
+                "Loaned On",
+                "Return By",
+                "Returned On"
+            ];
     
-            let loanedBooks = loans.rows.map(loan => {
+            const loanedBooks = loans.rows.map(loan => {
                 return loan.get({
                     plain: true
                 });
             });
+            
+            let pgCount = Math.ceil(loans.count / 10);
     
             const title = "Loans";
     
-            res.render('list_selector', { loanedBooks, count, filter, currPage, columns, title, entity });
+            res.render('list_selector', { 
+                entity, 
+                pgCount, 
+                currPage, 
+                filter, 
+                loanedBooks, 
+                columns, 
+                title 
+            });
+            
+        }).catch(error => {
+            res.status(500).send(error);
         });
     });
     

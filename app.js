@@ -42,7 +42,7 @@
     app.use('/patron', patronRoute);    //  route to patrons
     app.use('/loan', loanRoute)         //  route to loans of books
     
-    /*//  In Express a 404 is not the result of an error but rather the app running out of options. 
+    //  In Express a 404 is not the result of an error but rather the app running out of options. 
     //  Once the request doesn't match any of the routes, it will reach the following function.
     app.use(function(req, res, next) {  
         var err = new Error('No Route Found');
@@ -70,7 +70,7 @@
             message: err.message,
             error: {}
         });
-    });*/
+    });
 
     module.exports = app;
 }());

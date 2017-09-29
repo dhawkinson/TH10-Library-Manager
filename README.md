@@ -41,22 +41,22 @@ As a librarian, I should have a home screen so I can access functionality easily
 ###The home screen should include links to all of the following pages:
 
 *  [X] Books:
-  * New Book
-  * List All
-  * List Overdue
-  * List Checked Out
+  * [x] New Book
+  * [x] List All
+  * [x] List Overdue
+  * [x] List Checked Out
 *  [X] Patrons:
-  * New Patron
-  * List All
+  * [x] New Patron
+  * [x] List All
 *  [X] Loans
-  * New Loan
-  * List All
-  * List Overdue
-  * List Checked Out
+  * [x] New Loan
+  * [x] List All
+  * [x] List Overdue
+  * [x] List Checked Out
 
-**NOTE:** You should use Pug to render your views for this project. 
+**NOTE:** [x] You should use Pug to render your views for this project. 
 
-*** Avoid *** using a front end framework such as Angular.js.
+*** Avoid *** [x] using a front end framework such as Angular.js.
 
 ##Navigation: 
 
@@ -86,8 +86,8 @@ The form should check that the information is valid. If the form information is 
 
 As a librarian, I should be able to go to a book’s detail page, make edits and view its loan history. Example book_detail.html.
 There should be links to:
-*  [ ] return checked out or overdue books.
-*  [ ] each patron in the loan history.
+*  [x] return checked out or overdue books.
+*  [x] each patron in the loan history.
 
 ##Loan Listing Page: 
 
@@ -106,7 +106,7 @@ As a librarian, I should be able to check out a book so I can lend books to patr
 
 * [x] The book field should be a **select box** where you can select the book_id.
 * [x] The patron field should be a **select box** where you can select the patron_id.
-* [x] The loaned_on field should be auto populated with today’s date. Example: 2016-10-20. 
+* [ ] The loaned_on field should be auto populated with today’s date. Example: 2016-10-20. 
 * [x] The returned by date should also be pre-populated with a date 7 days in the future, for example: 2016-10-27.
 
 * The required fields for the New Loan field are:
@@ -123,21 +123,22 @@ As a librarian, I should be able to return a book so we know the current state o
 
 The only field should be for the returned_on should be **pre-populated with today’s date**. Example: 2016-10-20.
 
-* [ ] returned_on is a required field.
+* [x] returned_on is a required field.
 
 ##Patron Listing Page: 
 
-As a librarian, I should be able to list all patrons so I can find and access library-goers easily. Example: all_patrons.html.
+As a librarian, I should be able to:
+* [x] List all patrons so I can find and access library-goers easily. Example: all_patrons.html.
 
-* [ ] There should be **links to each patron detail page.**
+* [x] There should be **links to each patron detail page.**
 
 ##Patron Detail Page: 
 
 As a librarian, I should be able to go to a **patron's detail page**, make edits and view their loan history. Example patron_detail.html.
 
 * There should be links to:
-  * [ ] return checked out or overdue books.
-  * [ ] each book in the loan history.
+  * [x] return checked out or overdue books.
+  * [x] each book in the loan history.
 
 ##New Patron Page: 
 
@@ -161,10 +162,10 @@ For example, if the first name field is empty on the new patron form and the lib
 **To get an "exceeds" rating, you can expand on the project in the following ways:**
 
 *  [X] Include pagination for the loans and books listing pages.
-*  [ ] Include search fields on at least one of the books or patrons listing pages.
+*  [X] Include search fields on at least one of the books or patrons listing pages.
 *Examples:*
-*  [ ] first_name, last_name,library_id, etc for patrons
-*  [ ] title, author, genre, etc for books
+*  [x] first_name, last_name,library_id, etc for patrons
+*  [x] title, author, genre, etc for books
 
 Searching should be case **insensitive** and be partial matches for strings.
 
