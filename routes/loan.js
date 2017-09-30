@@ -22,13 +22,12 @@
     //  ROUTER STRUCTURE
     //      1. New Loan processing
     //      2. Loan queries/listings
-    //      3. Loan return processing
     // ==========================================================================
     
     //  1. GET response for "new loan" request
     //  =========================================================================
     router.get('/new', (req, res, next) => {
-        
+        const title = 'New Loan';
         //  gather the books for the drop down selector
         const books = Book.findAll({
             attributes: [
@@ -45,25 +44,24 @@
             ]
         });
         // data is gathered - render the form
-        Promise.all([books, patrons]).then(data => {
+        Promise.all([books, patrons])
+        .then(data => {
+            // pass the parameters
             const books = data[0].map(book => {
                 return Object.assign({}, {
                     id: book.dataValues.id,
                     title: book.dataValues.title
                 });
             });
-    
             const patrons = data[1].map(patron => {
                 return Object.assign({}, {
                     id: patron.dataValues.id,
                     fullName: patron.dataValues.name
                 });
             });
-    
             const loanedOn = today;
             const returnBy = weekFromToday;
-            const title    = "New Loan";
-    
+            //render the form
             res.render('new_selector', { 
                 entity,
                 title, 
@@ -92,11 +90,11 @@
             ]
         });
     
-        Promise.all([books, patrons]).then(data => {
+        Promise.all([books, patrons])
+        .then(data => {
             const special = /[!@#$%^&*()_+=<>,.'";:`~]+/ig;
             const dateMatch = /^\d{4}-\d{2}-\d{2}$/igm;
             const errors = [];
-    
             const books = data[0].map(book => {
                 return Object.assign({}, {
                     id: book.dataValues.id,
@@ -134,11 +132,21 @@
                 Loan.create(req.body).then(() => {
                     res.redirect('/loan/new');
                 }).catch(error => {
+                    // if there is a validation error
                     if (error.name === 'SequelizeValidationError') {
-                        res.render('new_selector', { today, weekFromToday, books, patrons, errors: error.errors, title: 'New Loan', entity });
+                        res.render('new_selector', { 
+                            entity,
+                            title,
+                            books, 
+                            patrons,
+                            today, 
+                            weekFromToday, 
+                            errors: error.errors 
+                        });
                     }
-                }).catch(error => {
-                    res.status(500).send(error);
+                    else {
+                        res.status(500).send(error);
+                    }
                 });
             }
         });
@@ -158,7 +166,9 @@
     router.get('/', (req, res, next) => {
         // no page selected - so page = 1
         if (req.query.page === undefined && req.query.filter === undefined) {
-            res.redirect('/loan?page=1');
+            res.redirect(
+                '/loan?page=1'
+            );
         }
 
         let loanQuery;
@@ -173,22 +183,22 @@
                 ['patron_id', 'ASC'],
                 ['returned_on', 'ASC']
             ],
-            include: [{
-                model: Book,
-                attributes: [
-                    ['id', 'id'],
-                    ['title', 'title']
+            include: [{                              // join to
+                model: Book,                         // Book
+                attributes: [                        // bring back
+                    ['id', 'id'],                    // id AND
+                    ['title', 'title']               // title
                 ]
-            }, {
-                model: Patron,
-                attributes: [
-                    ['id', 'id'],
-                    ['first_name', 'first_name'],
-                    ['last_name', 'last_name'],
+            }, {                                     // also join to
+                model: Patron,                       // Patron
+                attributes: [                        // bring back
+                    ['id', 'id'],                    // id AND
+                    ['first_name', 'first_name'],    // first_name AND
+                    ['last_name', 'last_name'],      // last_name
                 ]
             }],
-            limit: 10,
-            offset: (req.query.page * 10) - 10
+            offset: (req.query.page * 10) - 10,
+            limit: 10
         });
     
         if (req.query.filter === 'checked_out') {
@@ -217,8 +227,8 @@
                         ['last_name', 'last_name'],
                     ]
                 }],
-                limit: 10,
-                offset: (req.query.page * 10) - 10
+                offset: (req.query.page * 10) - 10,
+                limit: 10
             });
         }
         
@@ -251,13 +261,12 @@
                         ['last_name', 'last_name'],
                     ]
                 }],
-                limit: 10,
-                offset: (req.query.page * 10) - 10
+                offset: (req.query.page * 10) - 10,
+                limit: 10
             });
         }
     
-        loanQuery
-        .then(loans => {
+        loanQuery.then(loans => {
     
             currPage = req.query.page;
             if ( req.query.filter === 'checked_out' ) {
@@ -297,11 +306,11 @@
                 columns, 
                 title 
             });
-            
         }).catch(error => {
             res.status(500).send(error);
         });
     });
     
     module.exports = router;
+    
 }());

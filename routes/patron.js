@@ -31,7 +31,10 @@
     
     router.post('/new', (req, res, next) => {
         Patron.create(req.body)
-        .then(() => {res.redirect('/patron/new');})
+        .then(() => {res.redirect(
+            '/patron/new'
+            );}
+        )
         .catch(error => {
             // if the error is a validation error - retry
             if (error.name === "SequelizeValidationError") {
@@ -46,16 +49,12 @@
                     patronRow: patronData, 
                     errors: error.errors
                 });
-            } else {
-                throw error;
             }
-        })
-        .catch(error => {
-            res.status(500).send(error);
+            else {
+                res.status(500).send(error);
+            }
         });
     });   
-    //  end of processing for "new patron" request
-    //  =========================================================================
 
     //
     //  identification of query parameters
@@ -68,6 +67,42 @@
 
     //  2. Set Up the Patron Queries (listings)
     //  =========================================================================
+
+    //  capture search query parameters (optional use)
+    //  =========================================================================
+
+    router.post('/', (req, res, next) => {
+        
+        if (req.query.page === undefined && req.query.filter === undefined) {
+            req.query.page = 1;
+        }
+
+        Patron.findAndCountAll({
+            where: {
+                last_name: {
+                    $like: `%${ req.body.last_name.toLowerCase() }%`,
+                },
+                first_name: {
+                    $like: `%${ req.body.first_name.toLowerCase() }%`,
+                },
+                library_id: {
+                    $like: `%${ req.body.library_id.toLowerCase() }%`,
+                }
+            },
+            offset: (req.query.page * 10) - 10,
+            limit: 10
+        }).then(patrons => {
+            res.redirect(
+                `/patron?page=1
+                &search=true
+                &last_name=${ req.body.last_name ? req.body.last_name : '' }
+                &first_name=${ req.body.first_name ? req.body.first_name : ''}
+                &library_id=${ req.body.library_id ? req.body.library_id : ''}`
+            );
+        });
+    });
+
+    // GET other listing parameters
     router.get('/', (req, res, next) => {
 
         // no page selected - so page = 1
@@ -76,6 +111,7 @@
         }
 
         let patronQuery;
+        
         //  set search flag to true or false
         search = req.query.search ? req.query.search : false;
 
@@ -86,44 +122,12 @@
                     ['last_name', 'ASC'],
                     ['first_name', 'ASC']
                 ],
-                limit: 10,
-                offset: (req.query.page * 10) - 10
+                offset: (req.query.page * 10) - 10,
+                limit: 10
             });
         }
         
-        //capture search parameters (entry of search parameters)
-        router.post('/', (req, res, next) => {
-            
-            if (req.query.page === undefined && req.query.filter === undefined) {
-                req.query.page = 1;
-            }
-
-            Patron.findAndCountAll({
-                where: {
-                    last_name: {
-                        $like: `%${ req.body.last_name.toLowerCase() }%`,
-                    },
-                    first_name: {
-                        $like: `%${ req.body.first_name.toLowerCase() }%`,
-                    },
-                    library_id: {
-                        $like: `%${ req.body.library_id.toLowerCase() }%`,
-                    }
-                },
-                limit: 10,
-                offset: (req.query.page * 10) - 10
-            }).then(patrons => {
-                res.redirect(
-                    `/patron?page=1
-                    &search=true
-                    &last_name=${ req.body.last_name ? req.body.last_name : '' }
-                    &first_name=${ req.body.first_name ? req.body.first_name : ''}
-                    &library_id=${ req.body.library_id ? req.body.library_id : ''}`
-                );
-            });
-        });
-        
-        //  query for patrons with search parameters
+        //  query for patrons with search parameters (for pages other than page 1, page 1 handled in the POST above)
         if (req.query.search) {
             patronQuery = Patron.findAndCountAll({
                 where: {
@@ -137,14 +141,13 @@
                         $like: `%${ req.body.library_id.toLowerCase() }%`,
                     }
                 },
-                limit: 10,
-                offset: (req.query.page * 10) - 10
+                offset: (req.query.page * 10) - 10,
+                limit: 10
             });
         }
         
         //  render the patron query
-        patronQuery
-        .then(patrons => {
+        patronQuery.then(patrons => {
             currPage = req.query.page;
     
             const columns = [
@@ -170,13 +173,10 @@
                 patronData 
             });
     
-        })
-        .catch(error => {
+        }).catch(error => {
             res.status(500).send(error);
         });   
     });
-    //  end of the Patron Queries
-    //  =========================================================================
  
     //  3. Set Up the Patron Detail processing
     //  =========================================================================
@@ -301,10 +301,8 @@
                         errors: error.errors
                     });
                 } else {
-                    throw error;
+                    res.status(500).send(error);
                 }
-            }).catch(error => {
-                res.status(500).send(error);
             });
         });
     });

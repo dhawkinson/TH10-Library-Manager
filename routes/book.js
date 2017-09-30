@@ -25,21 +25,23 @@
     //  ROUTER STRUCTURE
     //      1. New Book processing
     //      2. Book queries/listings
-    //      3. Book detail processing
-    //      4. Loaned Book return processing
+    //      3. Loaned Book return processing
+    //      4. Book detail processing
     // ==========================================================================
     
-    //  1. GET response for "new book" request
     //  =========================================================================
+    //  1. NEW Book processing
+    //  =========================================================================
+    //  GET the new book form
+    const title = 'New Book';
     router.get('/new', (req, res, next) => {
-        const title = 'New Book';
         res.render('new_selector', { 
             entity,
             title, 
             bookRow: {}
         });
     });
-    //  POST a new book
+    //  POST a new book to the database
     router.post('/new', (req, res, next) => {
         Book.create(req.body)
         .then(() => {
@@ -62,9 +64,9 @@
                     errors
                 });
             }
-        })
-        .catch(error => {
-            res.status(500).send(error);
+            else {
+                res.status(500).send(error);
+            }
         });
     });
 
@@ -77,19 +79,65 @@
     //      req.query.search    = the indicator that a specific search is called for
     //    
 
+    //  =========================================================================
     //  2. Set Up the Book Queries (listings)
     //  =========================================================================
+
+    //  capture (POST) search query parameters (optional use)
+    //  =========================================================================
+    router.post('/', (req, res, next) => {
+        
+        // undefined page number and undefined filter indicates page = 1
+        if (req.query.page === undefined && req.query.filter === undefined) {
+            req.query.page = 1;
+        }
+
+        // use the req attributes to filter the query results
+        Book.findAndCountAll({
+            where: {
+                title: {
+                    $like: `%${ req.body.title.toLowerCase() }%`,
+                },
+                author: {
+                    $like: `%${ req.body.author.toLowerCase() }%`,
+                },
+                genre: {
+                    $like: `%${ req.body.genre.toLowerCase() }%`,
+                },
+                first_published: {
+                    $like: `%${ req.body.first_published }%`,
+                }
+            },
+            offset: (req.query.page * 10) - 10,
+            limit: 10
+        }).then(books => {
+            // redirect to render the query filtered by search parameters (page=1)
+            res.redirect(
+                `/book?page=1&search=true
+                &title=${ req.body.title ? req.body.title : '' }
+                &author=${ req.body.author ? req.body.author : ''}
+                &genre=${ req.body.genre ? req.body.genre : ''}
+                &first_published=${ req.body.first_published ? req.body.first_published : ''}`
+            );
+        });
+    });
+
+    //  GET other listing parameters
     router.get('/', (req, res, next) => {
         // no page selected - so page = 1
         if (req.query.page === undefined && req.query.filter === undefined) {
-            res.redirect('/book?page=1');
+           /* res.redirect(
+                '/book?page=1'
+            );*/
+            req.query.page = 1;
         }
 
         let bookQuery;
+
         //  set search flag to true or false
         search = req.query.search ? req.query.search : false;
 
-        //  a query with no search parameters
+        //  a query with no search parameters - the "All" listing
         if (req.query.search === undefined) {
             bookQuery = Book.findAndCountAll({
                 order: [
@@ -99,37 +147,46 @@
                 offset: (req.query.page * 10) - 10,
             });
         }
-               
-        //  capture search parameters (entry of search parameters)
-        router.post('/', (req, res, next) => {
 
-            if (req.query.page === undefined && req.query.filter === undefined) {
-                req.query.page = 1;
-            }
 
-            Book.findAndCountAll({
-                where: {
-                    title: {
-                        $like: `%${ req.body.title }%`,
-                    },
-                    author: {
-                        $like: `%${ req.body.author }%`,
-                    },
-                    genre: {
-                        $like: `%${ req.body.genre }%`,
-                    },
-                    first_published: {
-                        $like: `%${ req.body.first_published }%`,
+        //  query for Checked Out books (filter = checked_out)
+        if (req.query.filter === 'checked_out') {
+            bookQuery = Book.findAndCountAll({
+                distinct: 'title',
+                order: [
+                    ['title', 'ASC']
+                ],
+                include: {                              // join to
+                    model: Loan,                        // Loan (and bring back rows)
+                    where: {                            // where 
+                        returned_on: null               // returned_on date is null
                     }
                 },
-                limit: 10,
                 offset: (req.query.page * 10) - 10,
-            }).then(books => {
-                res.redirect(`/book?page=1&search=true&title=${ req.body.title ? req.body.title : '' }&author=${ req.body.author ? req.body.author : ''}&genre=${ req.body.genre ? req.body.genre : ''}&first_published=${ req.body.first_published ? req.body.first_published : ''}`);
+                limit: 10
             });
-        });
-
-        // query for books with search parameters
+        }
+        
+        //  query for Overdue books (filter = overdue)
+        if (req.query.filter === 'overdue') {
+            bookQuery = Book.findAndCountAll({
+                distinct: 'title',
+                order: [
+                    ['title', 'ASC']
+                ],
+                include: {                              // join to
+                    model: Loan,                        // Loan (and bring backs rows)
+                    where: {                            // where
+                        return_by: { $lt: today },      // return_by date is earlier than today AND
+                        returned_on: null               // returned_on date is null
+                    }
+                },
+                offset: (req.query.page * 10) - 10,
+                limit: 10
+            });
+        }
+ 
+        // query for books with search parameters (for pages other than page 1, page 1 handled in the POST above)
         if (req.query.search) {
             bookQuery = Book.findAndCountAll({
                 where: {
@@ -146,52 +203,14 @@
                             $like: `%${ req.query.first_published }%`,
                     }
                 },
-                limit: 10,
                 offset: (req.query.page * 10) - 10,
+                limit: 10
             });
         }
 
-        //  query for Checked Out books (a filter)
-        if (req.query.filter === 'checked_out') {
-            bookQuery = Book.findAndCountAll({
-                distinct: 'title',
-                order: [
-                    ['title', 'ASC']
-                ],
-                include: {                              // join to
-                    model: Loan,                        // Loan (and bring back rows)
-                    where: {                            // where 
-                        returned_on: null               // returned_on date is null
-                    }
-                },
-                limit: 10,
-                offset: (req.query.page * 10) - 10
-            });
-        }
-        
-        //  query for Overdue books (a filter)
-        if (req.query.filter === 'overdue') {
-            bookQuery = Book.findAndCountAll({
-                distinct: 'title',
-                order: [
-                    ['title', 'ASC']
-                ],
-                include: {                              // join to
-                    model: Loan,                        // Loan (and bring backs rows)
-                    where: {                            // where
-                        return_by: { $lt: today },      // return_by date is earlier than today AND
-                        returned_on: null               // returned_on date is null
-                    }
-                },
-                limit: 10,
-                offset: (req.query.page * 10) - 10
-            });
-        }
- 
-
-        // render the book query
-        bookQuery
-        .then(books => {
+        // after establishing the correct query, render the resulting book query
+        bookQuery.then(books => {
+            // set the parameters
             currPage = req.query.page;
             if ( req.query.filter === 'checked_out' ) {
                 filter = 'Checked Out'
@@ -202,7 +221,6 @@
             else { 
                 filter = 'All'
             }
-            //  set search fields
             search_title = req.query.title;
             author = req.query.author;
             genre = req.query.genre;
@@ -239,257 +257,255 @@
                 first_published,
                 search
             });
-        })
-        .catch(error => {
+        }).catch(error => {
             res.status(500).send(error);
         });
+    });
+    
+    //  =========================================================================
+    //  3. Set Up the return of a book
+    //  =========================================================================
+    router.get('/:id/return', (req, res, next) => {
+        Loan.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: [{
+                model: Book,
+                attributes: [
+                    ['title', 'title']
+                ]
+            }, {
+                model: Patron,
+                attributes: [
+                    ['first_name', 'first_name'],
+                    ['last_name', 'last_name']
+                ]
+            }]
+        }).then(loan => {
 
-        //  3. Set Up book detail processing
-        //  =========================================================================
-        router.get('/:id', (req, res, next) => {
-            // get the book specifics
-            Book.findAll({
-                where: {
-                    id: req.params.id
-                },
-            }).then(book => {
-                res.redirect(
-                    `/book/${req.params.id}/${book[0].dataValues.title.replace(/ /g, '_')}`
-                );
-            }).catch(error => {
-                res.status(500).send(error);
-            });
-        });
-
-        router.get('/:id/:title', (req, res, next) => {
-            const bookData = Book.findById(req.params.id);
-            // gather loan history information
-            const loanData = Loan.findAll({
-                where: {
-                    loaned_on: {
-                        $not: null
-                    }
-                },
-                include: [{                             // join
-                    model: Patron,                      // to Patron
-                    attributes: [                       // bring back
-                        ['first_name', 'first_name'],   // first name
-                        ['last_name', 'last_name']      // last name
-                    ]
-                }, {                                    // AND
-                    model: Book,                        // to Book
-                    where: {
-                        id: req.params.id               // id = req id
-                    }
-                }]
+            const loanedBook = loan.get({
+                plain: true
             });
 
-            Promise.all([
-                bookData,
-                loanData
-            ]).then(data => {
+            const title = `Return ${ loanedBook.Book.title }`;
 
-                bookDetail = true;
-
-                const columns = [
-                    "Book",
-                    "Patron",
-                    "Loaned On",
-                    "Return By",
-                    "Returned On"
-                ];
-
-                const book = data[0].get({
-                    plain: true
-                });
-
-                const loanedBooks = data[1].map(loan => {
-                    return loan.get({
-                        plain: true
-                    });
-                });
-
-                const title = `Book: ${ book.title }`;
-
-                res.render('detail_selector', { 
-                    entity, 
-                    title, 
-                    columns, 
-                    book, 
-                    loanedBooks, 
-                    bookDetail 
-                });
-
-            }).catch(error => {
-                res.status(500).send(error);
-            });
-        });
-
-        router.post('/:id/:name', (req, res, next) => {
-
-            const bookData = Book.findById(req.params.id);
-
-            const loanData = Loan.findAll({
-                where: {
-                    loaned_on: {
-                        $not: null
-                    }
-                },
-                include: [{
-                    model: Patron,
-                    attributes: [
-                        ['first_name', 'first_name'],
-                        ['last_name', 'last_name']
-                    ]
-                }, {
-                    model: Book,
-                    where: {
-                        id: req.params.id
-                    }
-                }]
-            });
-
-            Promise.all([
-                bookData,
-                loanData
-            ]).then(data => {
-
-                Book.update(req.body, {
-                    where: {
-                        id: req.params.id
-                    }
-                }).then(() => {
-                    res.redirect('/book');
-                }).catch(error => {
-                    // if there is a validation error then retry
-                    if (error.name === "SequelizeValidationError") {
-
-                        bookDetail = true;
-
-                        const bookRow = data[0].get({
-                            plain: true
-                        });
-
-                        const loanedBooks = data[1].map(loan => {
-                            return loan.get({
-                                plain: true
-                            });
-                        });
-
-                        const title = `Book: ${ book.title }`;
-
-                        const columns = [
-                            "Book",
-                            "Patron",
-                            "Loaned On",
-                            "Return By",
-                            "Returned On"
-                        ];
-
-                        res.render('detail_selector', { 
-                            entity, 
-                            title, 
-                            columns, 
-                            bookRow, 
-                            loanedBooks,
-                            bookDetail, 
-                            errors: error.errors
-                        });
-                    } else {
-                        throw error;
-                    }
-                })
-                .catch(error => {
-                    res.status(500).send(error);
-                });
-            });
-        });
-
-        //  4. Set Up the return of a book
-        //  =========================================================================
-        router.get('/:id/return', (req, res, next) => {
-            Loan.findOne({
-                where: {
-                    id: req.params.id
-                },
-                include: [{
-                    model: Book,
-                    attributes: [
-                        ['title', 'title']
-                    ]
-                }, {
-                    model: Patron,
-                    attributes: [
-                        ['first_name', 'first_name'],
-                        ['last_name', 'last_name']
-                    ]
-                }]
-            }).then(loan => {
-
-                const loanedBook = loan.get({
-                    plain: true
-                });
-
-                const title = `Return ${ loanedBook.Book.title }`;
-
-                res.render('return', { today, title, loanedBook });
-            });
-        });
-
-        // POST the book return update
-        router.post('/:id/return', (req, res, next) => {
-
-            Loan.findOne({
-                where: {
-                    id: req.params.id
-                },
-                include: [{
-                    model: Book,
-                    attributes: [
-                        ['title', 'title']
-                    ]
-                }, {
-                    model: Patron,
-                    attributes: [
-                        ['first_name', 'first_name'],
-                        ['last_name', 'last_name']
-                    ]
-                }]
-            }).then(loan => {
-
-                const dateMatch = /^\d{4}-\d{2}-\d{2}$/igm;
-
-                const loanedBook = loan.get({
-                    plain: true
-                });
-
-                const title = `Return ${ loanedBook.Book.title }`;
-                const errors = [];
-
-                // if you try to save a return with no return date
-                if (!req.body.returned_on) {
-                    errors.push(new Error('Return date cannot be empty'));
-                } else if (!dateMatch.test(req.body.returned_on)) {
-                    errors.push(new Error('You must enter a valid date. ex. 2017-07-08'));
-                }
-                //  update the return (no errors) and goto loan uri OR retry the return
-                if ( errors.length === 0 ) {
-                    loan.update({
-                        returned_on: req.body.returned_on
-                    }).then(() => {
-                        res.redirect('/loan');
-                    });
-                } else {
-                    res.render('return', { 
-                        title, 
-                        loanedBook, 
-                        today, 
-                        errors 
-                    });
-                }
-            });
+            res.render('return', { today, title, loanedBook });
         });
     });
+
+    // POST the book return update
+    router.post('/:id/return', (req, res, next) => {
+
+        Loan.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: [{
+                model: Book,
+                attributes: [
+                    ['title', 'title']
+                ]
+            }, {
+                model: Patron,
+                attributes: [
+                    ['first_name', 'first_name'],
+                    ['last_name', 'last_name']
+                ]
+            }]
+        }).then(loan => {
+
+            const dateMatch = /^\d{4}-\d{2}-\d{2}$/igm;
+
+            const loanedBook = loan.get({
+                plain: true
+            });
+
+            const title = `Return ${ loanedBook.Book.title }`;
+            const errors = [];
+
+            // if you try to save a return with no return date
+            if (!req.body.returned_on) {
+                errors.push(new Error('Return date cannot be empty'));
+            } else if (!dateMatch.test(req.body.returned_on)) {
+                errors.push(new Error('You must enter a valid date. ex. 2017-07-08'));
+            }
+            //  update the return (no errors) and goto loan uri OR retry the return
+            if ( errors.length === 0 ) {
+                loan.update({
+                    returned_on: req.body.returned_on
+                }).then(() => {
+                    res.redirect('/loan');
+                });
+            } else {
+                res.render('return', { 
+                    title, 
+                    loanedBook, 
+                    today, 
+                    errors 
+                });
+            }
+        });
+    });
+
+    //  =========================================================================
+    //  4. Set Up book detail processing
+    //  =========================================================================
+    router.get('/:id', (req, res, next) => {
+        // get the book specifics - id resulting from click on book in list
+        Book.findAll({
+            where: {
+                id: req.params.id
+            },
+        }).then(book => {
+            res.redirect(
+                `/book/${req.params.id}/${book[0].dataValues.title.replace(/ /g, '_')}`
+            );
+        }).catch(error => {
+            res.status(500).send(error);
+        });
+    });
+
+    router.get('/:id/:title', (req, res, next) => {
+        const bookData = Book.findById(req.params.id);
+        // gather loan history information
+        const loanData = Loan.findAll({
+            where: {
+                loaned_on: {
+                    $not: null
+                }
+            },
+            include: [{                             // join
+                model: Patron,                      // to Patron
+                attributes: [                       // bring back
+                    ['first_name', 'first_name'],   // first name
+                    ['last_name', 'last_name']      // last name
+                ]
+            }, {                                    // AND
+                model: Book,                        // to Book
+                where: {
+                    id: req.params.id               // id = req id
+                }
+            }]
+        });
+
+        Promise.all([
+            bookData,
+            loanData
+        ]).then(data => {
+
+            bookDetail = true;
+
+            const columns = [
+                "Book",
+                "Patron",
+                "Loaned On",
+                "Return By",
+                "Returned On"
+            ];
+
+            const book = data[0].get({
+                plain: true
+            });
+
+            const loanedBooks = data[1].map(loan => {
+                return loan.get({
+                    plain: true
+                });
+            });
+
+            const title = `Book: ${ book.title }`;
+
+            res.render('detail_selector', { 
+                entity, 
+                title, 
+                columns, 
+                book, 
+                loanedBooks, 
+                bookDetail 
+            });
+
+        }).catch(error => {
+            res.status(500).send(error);
+        });
+    });
+
+    router.post('/:id/:name', (req, res, next) => {
+
+        const bookData = Book.findById(req.params.id);
+
+        const loanData = Loan.findAll({
+            where: {
+                loaned_on: {
+                    $not: null
+                }
+            },
+            include: [{
+                model: Patron,
+                attributes: [
+                    ['first_name', 'first_name'],
+                    ['last_name', 'last_name']
+                ]
+            }, {
+                model: Book,
+                where: {
+                    id: req.params.id
+                }
+            }]
+        });
+
+        Promise.all([
+            bookData,
+            loanData
+        ]).then(data => {
+
+            Book.update(req.body, {
+                where: {
+                    id: req.params.id
+                }
+            }).then(() => {
+                res.redirect('/book');
+            }).catch(error => {
+                // if there is a validation error then retry
+                if (error.name === "SequelizeValidationError") {
+
+                    bookDetail = true;
+
+                    const bookRow = data[0].get({
+                        plain: true
+                    });
+
+                    const loanedBooks = data[1].map(loan => {
+                        return loan.get({
+                            plain: true
+                        });
+                    });
+
+                    const title = `Book: ${ book.title }`;
+
+                    const columns = [
+                        "Book",
+                        "Patron",
+                        "Loaned On",
+                        "Return By",
+                        "Returned On"
+                    ];
+
+                    res.render('detail_selector', { 
+                        entity, 
+                        title, 
+                        columns, 
+                        bookRow, 
+                        loanedBooks,
+                        bookDetail, 
+                        errors: error.errors
+                    });
+                } else {
+                    res.status(500).send(error);
+                }
+            });
+        });
+    }); 
 
     module.exports = router;
 
