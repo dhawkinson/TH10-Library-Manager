@@ -13,4 +13,4 @@
             if entity !== 'patron'
                 a.button(href=`/${ entity }?page=${ page }${ search ? `&search=${ search }&title=${ search_title }&author=${ author }&genre=${ genre }&first_published=${ first_published }` : ''}${ filter ? `&filter=${filter}` : ''}` class="page")= page++ 
             else
-                a.button(href=`/${ entity }?page=${ page }${ search ? `&search=${ search }&last_name=${ search_last_name }&first_name=${ search_first_name }&library_id=${ search_library_id }${ filter ? `&filter=${filter}` : ''}` class="page")= page++ 
+                a.button(href=`/${ entity }?page=${ page }${ search ? `&search=${ search }&last_name=${ search_last_name }&first_name=${ search_first_name }&library_id=${ search_library_id }` : '' }${ filter ? `&filter=${filter}` : ''}` class="page")= page++ 

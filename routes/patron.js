@@ -10,6 +10,7 @@
 
     let currPage;               //  initialize current page
     let filter      = 'All'     //  filter is really a placeholder for Patrons
+    let search;
 
     // ==========================================================================
     //  ROUTER STRUCTURE
@@ -71,7 +72,7 @@
     //  capture search query parameters (optional use)
     //  =========================================================================
 
-    router.post('/', (req, res, next) => {
+   router.post('/', (req, res, next) => {
         
         if (req.query.page === undefined && req.query.filter === undefined) {
             req.query.page = 1;
@@ -106,18 +107,20 @@
     router.get('/', (req, res, next) => {
 
         // no page selected - so page = 1
-        if (req.query.page === undefined && req.query.filter === undefined) {
-            res.redirect('/patron?page=1');
+        if (req.query.page === undefined) {
+            res.redirect(
+                '/patron?page=1'
+            );
         }
 
-        let patronQuery;
-        
+        let workingQuery;
+
         //  set search flag to true or false
         search = req.query.search ? req.query.search : false;
 
         // a query with no search parameters
         if ( req.query.search === undefined ) {
-            patronQuery = Patron.findAndCountAll({
+            workingQuery = Patron.findAndCountAll({
                 order: [
                     ['last_name', 'ASC'],
                     ['first_name', 'ASC']
@@ -129,7 +132,7 @@
         
         //  query for patrons with search parameters (for pages other than page 1, page 1 handled in the POST above)
         if (req.query.search) {
-            patronQuery = Patron.findAndCountAll({
+            workingQuery = Patron.findAndCountAll({
                 where: {
                     last_name: {
                         $like: `%${ req.body.last_name.toLowerCase() }%`,
@@ -147,7 +150,7 @@
         }
         
         //  render the patron query
-        patronQuery.then(patrons => {
+        workingQuery.then(patrons => {
             currPage = req.query.page;
     
             const columns = [
@@ -169,13 +172,14 @@
             res.render('list_selector', { 
                 entity,
                 title,
+                filter,
                 columns,
                 patronData 
             });
     
         }).catch(error => {
             res.status(500).send(error);
-        });   
+        });
     });
  
     //  3. Set Up the Patron Detail processing

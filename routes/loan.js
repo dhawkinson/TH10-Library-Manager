@@ -155,7 +155,7 @@
     //
     //  identification of query parameters
     //
-    //      loanQuery           = the resuting query and is conditionally built
+    //      query           = the resuting query and is conditionally built
     //      req.query.page      = a requested page number (may be undefined)
     //      req.query.filter    = the requested lisitng filter (All/Checked Out/Overdue)
     //      req.query.search    = the indicator that a specific search is called for
@@ -171,9 +171,9 @@
             );
         }
 
-        let loanQuery;
+        let workingQuery;
     
-        loanQuery = Loan.findAndCountAll({
+        workingQuery = Loan.findAndCountAll({
             where: [{
                 loaned_on: {
                     $not: null
@@ -202,7 +202,7 @@
         });
     
         if (req.query.filter === 'checked_out') {
-            loanQuery = Loan.findAndCountAll({
+            workingQuery = Loan.findAndCountAll({
                 where: [{
                     loaned_on: {
                         $not: null
@@ -233,7 +233,7 @@
         }
         
         if (req.query.filter === 'overdue') {
-            loanQuery = Loan.findAndCountAll({
+            workingQuery = Loan.findAndCountAll({
                 where: [{
                     loaned_on: {
                         $not: null
@@ -266,7 +266,7 @@
             });
         }
     
-        loanQuery.then(loans => {
+        workingQuery.then(loans => {
     
             currPage = req.query.page;
             if ( req.query.filter === 'checked_out' ) {

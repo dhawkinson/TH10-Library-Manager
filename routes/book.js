@@ -6,9 +6,9 @@
 
     const today     = moment().format('YYYY[-]MM[-]DD');
 
-    const Book      = require('../models').Book;
-    const Loan      = require('../models').Loan;
-    const Patron    = require('../models').Patron;
+    const Book      = require('../models').Book;            //  the Book Model
+    const Patron    = require('../models').Patron;          //  the Patron Model
+    const Loan      = require('../models').Loan;            //  the Loan Model
 
     let entity      = 'book';
 
@@ -31,6 +31,7 @@
     
     //  =========================================================================
     //  1. NEW Book processing
+    //          executes as a result of a click on the "New Book" navigation selection
     //  =========================================================================
     //  GET the new book form
     const title = 'New Book';
@@ -81,6 +82,7 @@
 
     //  =========================================================================
     //  2. Set Up the Book Queries (listings)
+    //      executes as a result of selecting a Book Listing navigation selection (All/Checked Out/Overdue)
     //  =========================================================================
 
     //  capture (POST) search query parameters (optional use)
@@ -132,26 +134,26 @@
             req.query.page = 1;
         }
 
-        let bookQuery;
+        let workingQuery;
 
         //  set search flag to true or false
         search = req.query.search ? req.query.search : false;
 
         //  a query with no search parameters - the "All" listing
         if (req.query.search === undefined) {
-            bookQuery = Book.findAndCountAll({
+            workingQuery = Book.findAndCountAll({
                 order: [
                         ['title', 'ASC']
                 ],
-                limit: 10,
                 offset: (req.query.page * 10) - 10,
+                limit: 10
             });
         }
 
 
         //  query for Checked Out books (filter = checked_out)
         if (req.query.filter === 'checked_out') {
-            bookQuery = Book.findAndCountAll({
+            workingQuery = Book.findAndCountAll({
                 distinct: 'title',
                 order: [
                     ['title', 'ASC']
@@ -169,7 +171,7 @@
         
         //  query for Overdue books (filter = overdue)
         if (req.query.filter === 'overdue') {
-            bookQuery = Book.findAndCountAll({
+            workingQuery = Book.findAndCountAll({
                 distinct: 'title',
                 order: [
                     ['title', 'ASC']
@@ -188,7 +190,7 @@
  
         // query for books with search parameters (for pages other than page 1, page 1 handled in the POST above)
         if (req.query.search) {
-            bookQuery = Book.findAndCountAll({
+            workingQuery = Book.findAndCountAll({
                 where: {
                     title: {
                             $like: `%${ req.query.title.toLowerCase() }%`,
@@ -209,7 +211,7 @@
         }
 
         // after establishing the correct query, render the resulting book query
-        bookQuery.then(books => {
+        workingQuery.then(books => {
             // set the parameters
             currPage = req.query.page;
             if ( req.query.filter === 'checked_out' ) {
@@ -264,22 +266,26 @@
     
     //  =========================================================================
     //  3. Set Up the return of a book
+    //      NOTE: Express uses the : to denote a variable in a route, so id is variable and depends on the row clicked
+    //        /return represents the endpoint to which the id will be sent, ie: the processor for returning a book
+    //      executes as a result of cliking on the Return link off of a Book Listing row
     //  =========================================================================
+    // use the id to get thr row (book) being returned
     router.get('/:id/return', (req, res, next) => {
         Loan.findOne({
             where: {
                 id: req.params.id
             },
-            include: [{
-                model: Book,
-                attributes: [
-                    ['title', 'title']
+            include: [{                     // join to
+                model: Book,                // Book
+                attributes: [               // bring back
+                    ['title', 'title']      // the book title
                 ]
-            }, {
-                model: Patron,
-                attributes: [
-                    ['first_name', 'first_name'],
-                    ['last_name', 'last_name']
+            }, {                                    // AND join to
+                model: Patron,                      // Patron
+                attributes: [                       // bring back
+                    ['first_name', 'first_name'],   // first_name AND
+                    ['last_name', 'last_name']      // last_name
                 ]
             }]
         }).then(loan => {
@@ -290,7 +296,10 @@
 
             const title = `Return ${ loanedBook.Book.title }`;
 
-            res.render('return', { today, title, loanedBook });
+            res.render(
+                'return', 
+                { today, title, loanedBook }
+            );
         });
     });
 
@@ -350,6 +359,7 @@
 
     //  =========================================================================
     //  4. Set Up book detail processing
+    //      executes as a result of clicking on a Book Title on a Book Listing row
     //  =========================================================================
     router.get('/:id', (req, res, next) => {
         // get the book specifics - id resulting from click on book in list
