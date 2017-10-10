@@ -1,16 +1,11 @@
-.book-search
-    form(action=`/book?page=1&search=true&title=${ req.body.title ? req.body.title : '' }&author=${ req.body.author ? req.body.author : ''}&genre=${ req.body.genre ? req.body.genre : ''}&first_published=${ req.body.first_published ? req.body.first_published : ''}` method="post")
-        p
-            label(for='title') Title
-            input#title(type='text')
-        p
-            label(for='author') Author
-            input#author(type='text')
-        p
-            label(for='genre') Genre
-            input#genre(type='text')
-        p
-            label(for='first_published') First Published
-            input#first_published(type='text')
-        p
-            input(type='submit', value='Search')
+form.book-search(action='/book?search=true', method='post')
+    .search-grid
+        label.title-set(for='title') Title
+        input.title-set(type='text', name='title')
+        label.author-set(for='author') Author
+        input.author-set(type='text', name='author')
+        label.genre-set(for='genre') Genre
+        input.genre-set(type='text', name='genre')
+        label.published-set(for='first_published') First Pub
+        input.published-set(type='text', name='first_publshed')
+        input.submit(type='submit', value='Search')

@@ -9,29 +9,32 @@ body {
     color: #042356
 }
 
-/*.grid {
-    width: 95%;
-    margin: 0 auto 0 auto;
-}*/
-
-.header,
-.card {
-    background-color: #FFFFFF;
-    opacity: .75;
-    margin: 0 auto 0 auto;
-    border-radius: 10px;
+a,
+input[type='submit'] {
+    font-family: 'Montserrat', sans-serif;
+    font-size: .9em;
+    display: inline-block;
+    color: rgb(17, 109, 167);
+    padding-left: 1.5em;
+    text-decoration: none;
 }
 
 .header {
     width: 95%;
+    padding: .5%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+.header,
 .card {
-    padding: 0 1em;
+    background-color: #FFFFFF;
+    opacity: .80;
+    border-radius: 10px;
 }
 
 .logo {
-    grid-area: logo;
+    grid-area: brand;
 }
 
 .app-title {
@@ -90,29 +93,15 @@ body {
     grid-area: listLoansOD;
 }
 
-[class^='head-'] h2 {
+[class^='head-'],
+.app-title {
     margin: 0;
     padding: 0;
 }
 
-a {
-    display: inline-block;
-    color: #0065A4;
-    padding-left: 1.5em;
-}
-
-.gap {
-    width: 100%;
-    height: 10px;
-}
-
-[id*='-form'] h2 {
-    text-align: center;
-}
-
-.card {
-    padding: 1em;
-    margin: auto;
+.card h2 {
+    text-align: left;
+    margin-top: 0;
 }
 
 .card table {
@@ -120,25 +109,41 @@ a {
     margin: auto;
 }
 
-.input-set {
-    display: flex;
-    flex-flow: row nowrap;
-    /*justify-content:space-between;*/
+label.title-set {
+    grid-area: tHead;
 }
 
-label, input {
-    flex: 0 1 auto;
+label.author-set > {
+    grid-area: aHead;
 }
 
-label {
-    width: 40%;
-    text-align: right;
-    padding-right: 1em;
+label.genre-set {
+    grid-area: gHead;
 }
 
-input[type='text'] {
-    width: 40%;
-    text-align: left;
+label.published-set {
+    grid-area: pHead;
+}
+
+input.title-set {
+    grid-area: tInput;
+}
+
+input.author-set {
+    grid-area: aInput;
+}
+
+input.genre-set {
+    grid-area: gInput;
+}
+
+input.published-set {
+    grid-area: pInput;
+}
+
+input.submit {
+    grid-area: sButton;
+    margin-top: 1em;
 }
 
 th {
@@ -154,23 +159,51 @@ a.nav {              /*  allows links to justify with heads  */
     padding: 2em 0;
 }
 
+tr:nth-child(2n) {
+    background-color: #E6DEAD;
+}
+
+.return-label {
+    display: inline;
+    width: 30%;
+    padding-right: 3em;
+}
+
+.return-text {
+    font-style: italic;
+}
+
+.input-set label {
+    display: inline-block;
+    width: 30%;
+    text-align: right;
+    padding-right: 1em;
+}
+
+.input-set input,
+.input-set select {
+    width: 40%;
+    text-align: left;
+}
+
 a.page,
-input[type='submit'] {
+input[type='submit'],
+td .button {
     background-color: #042356;
     border: 1px solid #042356;
     border-radius: 5px;
     color: white;
-    padding: .5em 1em;
+    text-align: center;
+    padding: 0 1em;
     margin: 0 auto;
+}
+
+input[type='text'] {
+    background-color: rgb(209, 234, 248);
+    border: 1px solid #042356;
 }
 
 .page {
     display: inline;
     text-decoration: none;
-    text-align: center;
-    margin: 0 auto;
-}
-/* search parameters */
-.book-search p {
-    display: inline;
 }

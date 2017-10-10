@@ -1,4 +1,4 @@
-.card#patron-form
+.card
     h2= title
     form(action=`${ patronDetail ? `/${ entity }/${patronRow.id}/${ patronRow.first_name }_${ patronRow.last_name }` : `/${ entity }/new`}`, method="post")
         p.input-set
@@ -20,5 +20,5 @@
             label(for="zip_code") Zip Code 
             input(id="zip_code", name="zip_code", type="text", value=patronRow.zip_code)
         p
-            input(type="submit" value=`${ patronDetail ? 'Update Patron' : 'New Patron'}`)
+            input(type="submit" value=`${ patronDetail ? 'Update Patron' : 'Save Patron'}`)
     include ./_error

@@ -10,45 +10,45 @@ The library.db file should contain 3 tables. Create a Sequelize model for a book
 
 ###There are no timestamps.
 
-*  [x] The books table should have the following columns:
-    *  id an integer, 
-    * title a string, 
-    * author a string, 
-    * genre a string 
-    *  first_published an integer.
+* [x] The books table should have the following columns:
+  * id (integer)
+  * title (string),
+  * author (string)
+  * genre (string)
+  * first_published an integer
 
 * [x] The patrons table should have the following columns: 
-  * id an integer, 
-  * first_name (string), 
-  * last_name (string), 
-  * address (string), 
-  * email (string), 
-  * library_id (string) 
-  * zip_code ( integer)
+  * id (integer)
+  * first_name (string)
+  * last_name (string)
+  * address (string)
+  * email (string)
+  * library_id (string)
+  * zip_code (integer)
 
 * [x] The loans table should have the following columns: 
-  * id (integer), 
-  * book_id (integer), 
-  * patron_id (integer), 
-  * loaned_on (date), 
-  * return_by (date) 
-  * returned_on (date).
+  * id (integer)
+  * book_id (integer)
+  * patron_id (integer)
+  * loaned_on (date)
+  * return_by (date)
+  * returned_on (date)
 
-##Home Screen: 
+##Home Screen:
 
 As a librarian, I should have a home screen so I can access functionality easily with a single click. See home.html for an example. 
 
 ###The home screen should include links to all of the following pages:
 
-*  [X] Books:
+* [X] Books:
   * [x] New Book
   * [x] List All
   * [x] List Overdue
   * [x] List Checked Out
-*  [X] Patrons:
+* [X] Patrons:
   * [x] New Patron
   * [x] List All
-*  [X] Loans
+* [X] Loans
   * [x] New Loan
   * [x] List All
   * [x] List Overdue
@@ -61,9 +61,9 @@ As a librarian, I should have a home screen so I can access functionality easily
 ##Navigation: 
 
 As a librarian, I should be able to access a main navigation menu from every page of my application. The navigation should include links to the: 
-*  [X] Books Listing page (*all_books.html*), 
-*  [X] Patrons Listing page (*all_patrons.html*)
-*  [X] Loans Listing page (*all_loans.html*) so I can view this information. See navigation on all pages for examples.
+* [X] Books Listing page (*all_books.html*)
+* [X] Patrons Listing page (*all_patrons.html*)
+* [X] Loans Listing page (*all_loans.html*) so I can view this information. See navigation on all pages for examples.
 
 ##Books Listing Page: 
 
@@ -74,11 +74,11 @@ As a librarian, I should be able to filter books by ‘overdue’ and ‘checked
 As a librarian, I should be able to add a book to the database so that they can be tracked on the system. Example: new_book.html.
 
 * The required fields for user input are:
-  *  [x] title
-  *  [x] author
-  *  [x]genre
+  * [x] title
+  * [x] author
+  * [x]genre
 * Optional fields:
-  *  [x]first_published
+  * [x]first_published
 
 The form should check that the information is valid. If the form information is valid, the page should redirect to the Books Listing Page, and the new book should appear in the list with updated information.
 
@@ -86,8 +86,8 @@ The form should check that the information is valid. If the form information is 
 
 As a librarian, I should be able to go to a book’s detail page, make edits and view its loan history. Example book_detail.html.
 There should be links to:
-*  [x] return checked out or overdue books.
-*  [x] each patron in the loan history.
+* [x] return checked out or overdue books
+* [x] each patron in the loan history
 
 ##Loan Listing Page: 
 
@@ -95,26 +95,26 @@ As a librarian, I should be able to filter loans by “All”, “Overdue”, an
 
 **There should be links to:**
 
-*  [x] return checked out or overdue books.
-*  [x] each book in the loan history.
-*  [x] each patron in the loan history.
+* [x] return checked out or overdue books.
+* [x] each book in the loan history.
+* [x] each patron in the loan history.
 
-##New Loan Page: 
+##New Loan Page:
 
 As a librarian, I should be able to check out a book so I can lend books to patrons. Example new_loan.html.
 
 
-* [x] The book field should be a **select box** where you can select the book_id.
-* [x] The patron field should be a **select box** where you can select the patron_id.
-* [ ] The loaned_on field should be auto populated with today’s date. Example: 2016-10-20. 
-* [x] The returned by date should also be pre-populated with a date 7 days in the future, for example: 2016-10-27.
+* [x] The book field should be a **select box** where you can select the book_id
+* [x] The patron field should be a **select box** where you can select the patron_id
+* [x] The loaned_on field should be auto populated with today’s date. Example: 2016-10-20
+* [x] The returned by date should also be pre-populated with a date 7 days in the future, for example: 2016-10-27
 
 * The required fields for the New Loan field are:
   * [x] book_id
   * [x] patron_id
   * [x] loaned_on
   * [x] return_by
-* Not required: 
+* Optional:
   * [x] returned_on
 
 ##Return Book Page: 

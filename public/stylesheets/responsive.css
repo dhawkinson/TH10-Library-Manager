@@ -6,9 +6,9 @@
     .header {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 60px repeat(6, 12px);
+        grid-template-rows: 70px repeat(6, 12px);
         grid-template-areas:
-            "brand       brand         brand"
+            ".           brand         ."
             "appTitle    appTitle      appTitle"
             "headBooks   headPatrons   headLoans"
             "bookNew     patronNew     loanNew"
@@ -16,123 +16,143 @@
             "bookListCO  .             loanListCO"
             "bookListOD  .             loanListOD"
             ;
-        justify-content: space-around;
+            column-gap: 5px;
     }
     .gap {
+        width: 100%;
         height: 5px;
     }
     
+    .header,
     .card {
-        width: 95%;        
+        width: 90%;
+        padding: 2.5%;
+        margin: 0 auto;       
     }
     
-    .logo {
+    a.logo img {
         justify-self: center;
         align-self: center;
         height: 50px;
         width: 50px;
+        margin: 5% auto;
     }
     
-    .appTitle {
+    .app-title {
         justify-self: center;
+        align-self: center;
+        text-align: center;
+        margin: 0 auto;
+    }
+    
+    a.nav,
+    h3[class^='head-'] {
+        justify-self: start;
+    }
+    
+    .search-grid {
+        display: inline-grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4,12px);
+        grid-template-areas:
+            "tHead   aHead"
+            "tInput  aInput" 
+            "gHead   pHead" 
+            "gInput  pInput"
+            "sButton ."
+            ;
+        grid-gap: .5em;
+    }
+
+    label[class$="-set"],
+    label[class$="-set"] {
+        justify-self: start;
         align-self: center;
     }
     
-    [class^='head-'] {
-        justify-self: start;
-    }
+    table { border-collapse: separate; border-spacing: 2px; };   /* set the spacing between table cells  */
     
-    [class^='nav-'] {
-        justify-self: start;
-    }
 }
 
 /* Desktops and laptops ----------- */
 @media only screen  and (min-width : 901px) {
     /* Styles */
     body { font-size: 12px;}
-
+    
     .header {
         display: grid;
-        grid-template-columns: 70px 2fr 130px 100px 130px;
-        grid-template-rows: repeat(5, 15px);
+        grid-template-columns: 2fr 9fr repeat(3,2fr);
+        grid-template-rows: repeat(5,18px);
         grid-template-areas:
-            "brand appTitle headBooks   headPatrons   headLoans"
-            "brand appTitle bookNew     patronNew     loanNew"
-            "brand appTitle bookListAll patronListAll loanListAll"
-            "brand appTitle bookListCO  .             loanListCO"
-            "brand appTitle bookListOD  .             loanListOD"
-            "brand appTitle bookDetail  patronDetail  loanReturn"
+            "brand appTitle headBooks    headPatrons    headLoans"
+            "brand appTitle bookNew      patronNew      loanNew"
+            "brand appTitle listBooksAll listPatronsAll listLoansAll"
+            "brand appTitle listBooksCO  .              listLoansCO"
+            "brand appTitle listBooksOD  .              listLoansOD"
             ;
+            justify-items: start;
+            align-items: center;
+        grid-gap: 2%;
+        width: 95%;
     }
 
-    .logo {
-        justify-self: center;
-        align-self: start;
-        width: 60px;
-        height; 60px;
+    .gap {
+        height: 10px;
+    }
+    
+    .card {
+        width: 80%;
+        padding: 1em;
+        margin: 0 auto;       
+    }
+
+    a.logo img {
+        grid-column: 1 / 1;
+        width: 65px;
+        height: 65px;
+        margin: 0;
     }
     
     .app-title {
+        grid-column: 2 / span(1);
         justify-self: center;
         align-self: center;
     }
-    
-    [class^='head-'] {
-        justify-self: start;
+
+    .search-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(2,18px);
+        grid-template-areas:
+            "tHead   aHead  gHead  pHead  ."
+            "tInput  aInput gInput pInput sButton"
+            ;
+        grid-gap: .5em;
     }
-    
-    [class^='nav-'] {
+
+    label[class$="-set"],
+    label[class$="-set"] {
         justify-self: start;
+        align-self: center;
     }
+
+    table { border-collapse: separate; border-spacing: 2px; };   /* set the spacing between table cells  */
 }
 
 /* Large Monitors ----------- */
 @media only screen  and (min-width : 1211px) {
     /* Styles */
     body { font-size: 16px;}
-
-    .header {
-        display: grid;
-        grid-template-columns: 80px 2fr 150px 120px 150px;
-        grid-template-rows: repeat(5,20px);
-        grid-template-areas:
-            "logo appTitle headBooks    headPatrons    headLoans"
-            "logo appTitle bookNew      patronNew      loanNew"
-            "logo appTitle listBooksAll listPatronsAll listLoansAll"
-            "logo appTitle listBooksCO  .              listLoansCO"
-            "logo appTitle listBooksOD  .              listLoansOD"
-            ;
-        padding: .75em 0;
-    }
-
-    .card {
-        width: 60%;        
-    }
     
-    .logo {
-        height: 70px;
-        width: 70px;
-        justify-self: center;
-        align-self: center;
-    }
-    
-    .app-title {
-        justify-self: center;
-        align-self: start;
-        padding: 0;
-        margin: 0;
+    a.logo img {
+        height: 80px;
+        width: 80px;
     }
 
-    [class^='head-'] {
-        justify-self: start;
-        align-self: center;
+    .search-grid {
+        grid-template-rows: repeat(2, 24px);
     }
 
-    [class^='book-'],
-    [class^='patron-'],
-    [class^='loan-'] {
-        justify-self: start;
-        align-self: center;
-    }
+    table { border-collapse: separate; border-spacing: 5px; };   /* set the spacing between table cells  */
+
 }

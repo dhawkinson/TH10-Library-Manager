@@ -4,10 +4,8 @@ block content
     include ./includes/_head_nav
     .card
         h2=`${title} - ${filter}`
-        //if entity === "book"
-        //    include ./includes/_book_search
-        //if entity === "patron"
-        //    include ./includes/_patron_search
+        if entity === "book"
+            include ./includes/_book_search
         table
             include ./includes/_table_heads
             tbody
@@ -17,4 +15,5 @@ block content
                     include ./includes/_table_rows_patrons
                 if entity === "loan"
                     include ./includes/_table_rows_loans
-        include ./includes/_pagination
+        if entity === "book" || entity === "loan"
+            include ./includes/_pagination

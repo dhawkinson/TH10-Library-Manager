@@ -3,16 +3,20 @@ block content
     include ./includes/_head_nav
     .card
         h2= title
-        p
-            strong Book Title: #{ loanedBook.Book.title } 
-        p
-            strong Loaned By: #{ loanedBook.Patron.full_name } 
-        p
-            strong Loaned On: #{ loanedBook.loaned_on } 
-        p
-            strong Return By: #{ loanedBook.return_by } 
+        p.return-label
+            strong Book Title: 
+            span.return-text #{ loanedBook.Book.title } 
+        p.return-label
+            strong Patron: 
+            span.return-text #{ loanedBook.Patron.full_name } 
+        p.return-label
+            strong Loaned On: 
+            span.return-text #{ loanedBook.loaned_on } 
+        p.return-label
+            strong Return By: 
+            span.return-text #{ loanedBook.return_by } 
         form(action="", method="post")
-            p
+            p.input-set
                 label(for="returned_on") Returned On
                 input(type="text", id="returned_on", name="returned_on", value=`${ today }`)
             p
