@@ -76,7 +76,7 @@ As a librarian, I should be able to add a book to the database so that they can 
 * The required fields for user input are:
   * [x] title
   * [x] author
-  * [x]genre
+  * [x] genre
 * Optional fields:
   * [x]first_published
 

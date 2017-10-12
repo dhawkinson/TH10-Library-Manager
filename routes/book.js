@@ -39,18 +39,20 @@ router.get('/new', (req, res, next) => {
     res.render('new_selector', { 
         entity,
         title, 
-        book: {}
+        bookRow: {}
     });
 });
 //  POST a new book to the database
 router.post('/new', (req, res, next) => {
     Book.create(req.body)
     .then(() => {
-        res.redirect('/book/new');  //  redirect to the next new book entry
+        res.redirect(
+        "/book?page=1"
+        );
     })
     .catch(error => {
         // if the error is a validation error - retry
-        if (error.name === 'SequelizeValidationError') {
+        if (error.name === "SequelizeValidationError" || error.name === "SequelizeUniqueConstraintError") {
             bookDetail = false;
             const book = Book.build(req.body);
             const bookData = book.get({
@@ -60,7 +62,7 @@ router.post('/new', (req, res, next) => {
             res.render('new_selector', { 
                 entity,
                 title: "New Book",
-                book: bookData,
+                bookRow: bookData,
                 bookDetail,  
                 errors
             });
@@ -358,25 +360,25 @@ router.post('/:id/return', (req, res, next) => {
 });
 
 //  =========================================================================
-//  4. Set Up book detail processing
+//  4. Set Up Book Detail processing
 //      executes as a result of clicking on a Book Title on a Book Listing row
 //  =========================================================================
 router.get('/:id', (req, res, next) => {
-    // get the book specifics - id resulting from click on book in list
-    Book.findAll({
-        where: {
-            id: req.params.id
-        },
-    }).then(book => {
+    Book.findById(req.params.id).then(book => {
+        
+        const bookData = book.get({
+            plain: true
+        });
+
         res.redirect(
-            `/book/${req.params.id}/${book[0].dataValues.title.replace(/ /g, '_')}`
+            `/book/${ req.params.id }/${ title }`
         );
-    }).catch(error => {
-        res.status(500).send(error);
     });
 });
 
+//  GET row for book detail - from the redirect above
 router.get('/:id/:title', (req, res, next) => {
+    //  select the one row for the detail
     const bookData = Book.findById(req.params.id);
     // gather loan history information
     const loanData = Loan.findAll({
@@ -414,7 +416,7 @@ router.get('/:id/:title', (req, res, next) => {
             "Returned On"
         ];
 
-        const book = data[0].get({
+        const bookRow = data[0].get({
             plain: true
         });
 
@@ -424,13 +426,13 @@ router.get('/:id/:title', (req, res, next) => {
             });
         });
 
-        const title = `Book: ${ book.title }`;
+        const title = `Book: ${ bookRow.title }`;
 
         res.render('detail_selector', { 
             entity, 
             title, 
             columns, 
-            book, 
+            bookRow, 
             loanedBooks, 
             bookDetail 
         });
@@ -477,11 +479,11 @@ router.post('/:id/:name', (req, res, next) => {
             res.redirect('/book');
         }).catch(error => {
             // if there is a validation error then retry
-            if (error.name === "SequelizeValidationError") {
+            if (error.name === "SequelizeValidationError" || error.name === "SequelizeUniqueConstraintError") {
 
                 bookDetail = true;
 
-                const bookData = data[0].get({
+                const bookRow = data[0].get({
                     plain: true
                 });
 
@@ -491,7 +493,7 @@ router.post('/:id/:name', (req, res, next) => {
                     });
                 });
 
-                const title = `Book: ${ bookData.title }`;
+                const title = `Book: ${ bookRow.title }`;
 
                 const columns = [
                     "Book",
@@ -505,7 +507,7 @@ router.post('/:id/:name', (req, res, next) => {
                     entity, 
                     title, 
                     columns, 
-                    bookData, 
+                    bookRow, 
                     loanedBooks,
                     bookDetail, 
                     errors: error.errors
@@ -515,6 +517,8 @@ router.post('/:id/:name', (req, res, next) => {
             }
         });
     });
-}); 
+});
+//  end of the Book Detail processing
+//  =========================================================================
 
 module.exports = router;

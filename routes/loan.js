@@ -24,8 +24,11 @@ let filter;
 //      2. Loan queries/listings
 // ==========================================================================
 
-//  1. GET response for "new loan" request
 //  =========================================================================
+//  1. NEW Loan processing
+//          executes as a result of a click on the "New Loan" navigation selection
+//  =========================================================================
+//  GET the new loan form
 router.get('/new', (req, res, next) => {
     const title = 'New Loan';
     //  gather the books for the drop down selector
@@ -44,7 +47,10 @@ router.get('/new', (req, res, next) => {
         ]
     });
     // data is gathered - render the form
-    Promise.all([books, patrons])
+    Promise.all(
+        [books, 
+        patrons]
+    )
     .then(data => {
         // pass the parameters
         const books = data[0].map(book => {
@@ -64,7 +70,7 @@ router.get('/new', (req, res, next) => {
         //render the form
         res.render('new_selector', { 
             entity,
-            title, 
+            //title, 
             books, 
             patrons, 
             today, 
@@ -73,24 +79,26 @@ router.get('/new', (req, res, next) => {
     });
 });
 
-// POST the new loan
+// POST a new loan to the database
 router.post('/new', (req, res, next) => {
-
-    const books = Book.findAll({
+    const books = Book.findAll({    //  gather the books for the drop down
         attributes: [
             ['id', 'id'],
             ['title', 'title']
         ]
     });
 
-    const patrons = Patron.findAll({
+    const patrons = Patron.findAll({    //  gather the patrons for the drop down
         attributes: [
             ['id', 'id'],
             [Patron.sequelize.literal('first_name || " " || last_name'), 'name'],
         ]
     });
 
-    Promise.all([books, patrons])
+    Promise.all(
+        [books, 
+        patrons]
+    )
     .then(data => {
         //const special = /[!@#$%^&*()_+=<>,.'";:`~]+/ig;
         const dateMatch = /^\d{4}-\d{2}-\d{2}$/igm;
@@ -121,7 +129,7 @@ router.post('/new', (req, res, next) => {
             // there are errors so errors are passed
             res.render('new_selector', { 
                 entity,
-                title,
+                title: "New Loan",
                 books, 
                 patrons, 
                 today, 
@@ -129,14 +137,17 @@ router.post('/new', (req, res, next) => {
                 errors 
             });
         } else {
-            Loan.create(req.body).then(() => {
-                res.redirect('/loan/new');
+            Loan.create(req.body)
+            .then(() => {
+                res.redirect(
+                "/loan?page=1"
+                );
             }).catch(error => {
                 // if there is a validation error
-                if (error.name === 'SequelizeValidationError') {
+                if (error.name === "SequelizeValidationError" || error.name === "SequelizeUniqueConstraintError") {
                     res.render('new_selector', { 
                         entity,
-                        title,
+                        title:"New Loan",
                         books, 
                         patrons,
                         today, 

@@ -19,8 +19,11 @@ let search;     // initialize search flag
 //      3. Patron detail processing
 // ==========================================================================
 
-//  1. GET response for "new patron" request
 //  =========================================================================
+//  1. NEW Patron processing
+//          executes as a result of a click on the "New patron" navigation selection
+//  =========================================================================
+//  GET the new patron form
 router.get('/new', (req, res, next) => {
     const title = 'New Patron';
     res.render('new_selector', {
@@ -32,23 +35,23 @@ router.get('/new', (req, res, next) => {
 
 router.post('/new', (req, res, next) => {
     Patron.create(req.body)
-    .then(() => {res.redirect(
-        '/patron/new'
-        );}
-    )
+    .then(() => {
+        res.redirect('/patron?page=1');
+    })
     .catch(error => {
         // if the error is a validation error - retry
-        if (error.name === "SequelizeValidationError") {
+        if (error.name === "SequelizeValidationError" || error.name === "SequelizeUniqueConstraintError") {
             const patron = Patron.build(req.body);
             const patronData = patron.get({
                 plain: true
             });
-
+            const errors = error.errors;
             res.render('new_selector', { 
                 entity, 
-                title: 'New Patron',
-                patronRow: patronData, 
-                errors: error.errors
+                title: "New Patron",
+                patronRow: patronData,
+                patronDetail, 
+                errors
             });
         }
         else {
@@ -108,9 +111,10 @@ router.get('/', (req, res, next) => {
     });
 });
 
-//  3. Set Up the Patron Detail processing
 //  =========================================================================
-//  the result of clicking on a specific patron in the patron listing
+//  3. Set Up the Patron Detail processing
+//      the result of clicking on a specific patron in the patron listing
+//  =========================================================================
 router.get('/:id', (req, res, next) => {
     Patron.findById(req.params.id).then(patron => {
 
@@ -219,7 +223,7 @@ router.post('/:id/:name', (req, res, next) => {
             res.redirect('/patron');
         }).catch(error => {
             // if validation error - retry
-            if (error.name === "SequelizeValidationError") {
+        if (error.name === "SequelizeValidationError" || error.name === "SequelizeUniqueConstraintError") {
                 //  NOTE: there is a validation error so there are errors to render
                 res.render('detail_selector', { 
                     entity,

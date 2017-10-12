@@ -1,18 +1,18 @@
 .card
     h2= title
-    form(action=`${ bookDetail ? `/${ entity }/${ book.id }/${ book.title.replace(/ /g, '_') }` : `/${entity}/new` }`, method="post")
+    form(action=`${ bookDetail ? `/${ entity }/${ bookRow.id }/${ bookRow.title.replace(/ /g, '_') }` : `/${entity}/new` }`, method="post")
         p.input-set
             label(for='title') Title
-            input(id="title", name="title", type="text", value=book.title)
+            input(id="title", name="title", type="text", value=bookRow.title)
         p.input-set
             label(for='author') Author
-            input(id="author", name="author", type="text", value=book.author)
+            input(id="author", name="author", type="text", value=bookRow.author)
         p.input-set
             label(for='genre') Genre
-            input(id="genre", name="genre", type="text", value=book.genre)
+            input(id="genre", name="genre", type="text", value=bookRow.genre)
         p.input-set
             label(for='first_published') First Published
-            input(id="first_published", name="first_published", type="text", value=book.first_published)
+            input(id="first_published", name="first_published", type="text", value=bookRow.first_published)
         p
             input(type="submit", value=`${ bookDetail ? 'Update Book' : 'Save Book'}`)
     include ./_error
