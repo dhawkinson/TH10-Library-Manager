@@ -1,7 +1,5 @@
 'use strict';
 
-// ... all vars and functions are in this scope only
-// still maintains access to all globals
 
 //  require the app modules
 const express       = require('express');           //  imports the framework into the app
@@ -26,7 +24,8 @@ app.use(cookieParser());
 app.set('views', path.join(__dirname, 'views'));  
 app.set('view engine', 'pug');
 
-//  rename public to static
+//  identify public as static
+//  tells Express to match any routes for files found in this folder and deliver the files directly to the browser
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
 //  NOTE TO SELF: Establish the Routes
