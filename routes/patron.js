@@ -8,9 +8,10 @@ const Book      = require('../models').Book;
 
 let entity      = 'patron';
 
-let currPage;   //  initialize current page
-let filter;     //  filter is really a placeholder for Patrons
-let search;     // initialize search flag
+let patronDetail;
+let currPage;
+let filter;
+let search;
 
 // ==========================================================================
 //  ROUTER STRUCTURE
@@ -36,11 +37,14 @@ router.get('/new', (req, res, next) => {
 router.post('/new', (req, res, next) => {
     Patron.create(req.body)
     .then(() => {
-        res.redirect('/patron?page=1');
+        res.redirect(
+        "/patron?page=1"
+        );
     })
     .catch(error => {
         // if the error is a validation error - retry
         if (error.name === "SequelizeValidationError" || error.name === "SequelizeUniqueConstraintError") {
+            patronDetail = false;
             const patron = Patron.build(req.body);
             const patronData = patron.get({
                 plain: true

@@ -166,20 +166,22 @@ router.post('/new', (req, res, next) => {
 //
 //  identification of query parameters
 //
-//      query           = the resuting query and is conditionally built
+//      Loanquery           = the resuting query and is conditionally built
 //      req.query.page      = a requested page number (may be undefined)
 //      req.query.filter    = the requested lisitng filter (All/Checked Out/Overdue)
 //      req.query.search    = the indicator that a specific search is called for
 //    
 
-//  2. Set Up the Loan Queries (listings)
 //  =========================================================================
+//  2. Set Up the Loan Queries (listings)
+//      executes as a result of selecting a Book Listing navigation selection (All/Checked Out/Overdue)
+//  =========================================================================
+
+//  GET other listing parameters
 router.get('/', (req, res, next) => {
     // no page selected - so page = 1
     if (req.query.page === undefined && req.query.filter === undefined) {
-        res.redirect(
-            '/loan?page=1'
-        );
+        req.query.page = 1;
     }
 
     let workingQuery;
@@ -304,7 +306,7 @@ router.get('/', (req, res, next) => {
             });
         });
         
-        let pgCount = Math.ceil(loans.count / 10);
+        const pgCount = Math.ceil(loans.count / 10);
 
         const title = "Loans";
 

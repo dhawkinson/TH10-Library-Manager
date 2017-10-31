@@ -159,6 +159,10 @@ a.nav {              /*  allows links to justify with heads  */
     padding: 2em 0;
 }
 
+ul.pagination li {
+    display: inline;
+}
+
 tr:nth-child(2n) {
     background-color: #E6DEAD;
 }
