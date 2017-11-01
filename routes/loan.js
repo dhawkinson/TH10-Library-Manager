@@ -15,8 +15,10 @@ const Patron        = require('../models').Patron;
 
 let entity          = 'loan';
 
+let workingQuery;
 let currPage;
 let filter;
+let sub_title;
 
 // ==========================================================================
 //  ROUTER STRUCTURE
@@ -70,7 +72,7 @@ router.get('/new', (req, res, next) => {
         //render the form
         res.render('new_selector', { 
             entity,
-            //title, 
+            title, 
             books, 
             patrons, 
             today, 
@@ -184,8 +186,6 @@ router.get('/', (req, res, next) => {
         req.query.page = 1;
     }
 
-    let workingQuery;
-
     workingQuery = Loan.findAndCountAll({
         where: [{
             loaned_on: {
@@ -283,13 +283,13 @@ router.get('/', (req, res, next) => {
 
         currPage = req.query.page;
         if ( req.query.filter === 'checked_out' ) {
-            filter = 'Checked Out'
+            sub_title = 'Checked Out'
         }
         else if ( req.query.filter === 'overdue' ) {
-            filter = 'Overdue'
+            sub_title = 'Overdue'
         }
         else { 
-            filter = 'All'
+            sub_title = 'All'
         }
 
         const columns = [
@@ -314,7 +314,8 @@ router.get('/', (req, res, next) => {
             entity, 
             pgCount, 
             currPage, 
-            filter, 
+            filter,
+            sub_title,
             loanedBooks, 
             columns, 
             title 

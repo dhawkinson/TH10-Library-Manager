@@ -192,7 +192,7 @@ tr:nth-child(2n) {
 
 a.page,
 input[type='submit'],
-td .button {
+.button {
     background-color: #042356;
     border: 1px solid #042356;
     border-radius: 5px;

@@ -3,7 +3,7 @@ extends ./layout
 block content
     include ./includes/_head_nav
     .card
-        h2=`${title} - ${filter}`
+        h2=`${title} - ${sub_title}`
         if entity === "book"
             include ./includes/_book_search
         table

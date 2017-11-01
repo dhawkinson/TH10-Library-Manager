@@ -12,9 +12,11 @@ const Loan      = require('../models').Loan;            //  the Loan Model
 
 let entity      = 'book';
 
+let workingQuery;
 let bookDetail;
 let currPage;
 let filter;
+let sub_title;
 let search;
 let search_title;
 let genre;
@@ -91,13 +93,8 @@ router.post('/new', (req, res, next) => {
 router.get('/', (req, res, next) => {
     // no page selected - so page = 1
     if (req.query.page === undefined && req.query.filter === undefined) {
-        /* res.redirect(
-            '/book?page=1'
-        );*/
         req.query.page = 1;
     }
-
-    let workingQuery;
 
     //  set search flag to true or false
     search = req.query.search ? req.query.search : false;
@@ -115,7 +112,7 @@ router.get('/', (req, res, next) => {
 
 
     //  query for Checked Out books (filter = checked_out)
-    if (req.query.filter === 'checked_out') {
+    if (req.query.filter === 'checked_out' || req.query.filter === 'Checked Out') {
         workingQuery = Book.findAndCountAll({
             distinct: 'title',
             order: [
@@ -133,7 +130,7 @@ router.get('/', (req, res, next) => {
     }
     
     //  query for Overdue books (filter = overdue)
-    if (req.query.filter === 'overdue') {
+    if (req.query.filter === 'overdue' || req.query.filter === 'Overdue') {
         workingQuery = Book.findAndCountAll({
             distinct: 'title',
             order: [
@@ -178,13 +175,13 @@ router.get('/', (req, res, next) => {
         // set the parameters
         currPage = req.query.page;
         if ( req.query.filter === 'checked_out' ) {
-            filter = 'Checked Out'
+            sub_title = 'Checked Out'
         }
         else if ( req.query.filter === 'overdue' ) {
-            filter = 'Overdue'
+            sub_title = 'Overdue'
         }
         else { 
-            filter = 'All'
+            sub_title = 'All'
         }
         search_title = req.query.title;
         author = req.query.author;
@@ -216,6 +213,7 @@ router.get('/', (req, res, next) => {
             pgCount,
             currPage,
             filter,
+            sub_title,
             search_title,
             author,
             genre,

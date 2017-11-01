@@ -4,5 +4,5 @@ if pgCount > 1
     ul.pagination
         while page <= pgCount
             li
-                a.button(href=`/${ entity }?page=${ page }${ search ? `&search=${ search }&title=${ search_title }&author=${ author }&genre=${ genre }&first_published=${ first_published }` : ''}${ filter ? `&filter=${filter}` : ''}` class="page")= page++ 
+                a.button(href=`/${ entity }?page=${ page }${ search ? `&search=${ search }&title=${ search_title }&author=${ author }&genre=${ genre }&first_published=${ first_published }` : ''}${ filter ? `&filter=${filter}` : ''}`)= page++ 
         
