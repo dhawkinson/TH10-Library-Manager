@@ -282,10 +282,11 @@ router.get('/', (req, res, next) => {
     workingQuery.then(loans => {
 
         currPage = req.query.page;
-        if ( req.query.filter === 'checked_out' ) {
+        filter = req.query.filter
+        if ( filter === 'checked_out' ) {
             sub_title = 'Checked Out'
         }
-        else if ( req.query.filter === 'overdue' ) {
+        else if ( filter === 'overdue' ) {
             sub_title = 'Overdue'
         }
         else { 

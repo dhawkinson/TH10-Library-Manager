@@ -78,7 +78,7 @@ router.post('/new', (req, res, next) => {
 //
 //  identification of query parameters
 //
-//      BookQuery           = the resuting query and is conditionally built
+//      workingQuery        = the resuting query and is conditionally built
 //      req.query.page      = a requested page number (may be undefined)
 //      req.query.filter    = the requested lisitng filter (All/Checked Out/Overdue)
 //      req.query.search    = the indicator that a specific search is called for
@@ -112,7 +112,7 @@ router.get('/', (req, res, next) => {
 
 
     //  query for Checked Out books (filter = checked_out)
-    if (req.query.filter === 'checked_out' || req.query.filter === 'Checked Out') {
+    if (req.query.filter === 'checked_out') {
         workingQuery = Book.findAndCountAll({
             distinct: 'title',
             order: [
@@ -130,7 +130,7 @@ router.get('/', (req, res, next) => {
     }
     
     //  query for Overdue books (filter = overdue)
-    if (req.query.filter === 'overdue' || req.query.filter === 'Overdue') {
+    if (req.query.filter === 'overdue') {
         workingQuery = Book.findAndCountAll({
             distinct: 'title',
             order: [
@@ -174,10 +174,11 @@ router.get('/', (req, res, next) => {
     workingQuery.then(books => {
         // set the parameters
         currPage = req.query.page;
-        if ( req.query.filter === 'checked_out' ) {
+        filter = req.query.filter
+        if ( filter === 'checked_out' ) {
             sub_title = 'Checked Out'
         }
-        else if ( req.query.filter === 'overdue' ) {
+        else if ( filter === 'overdue' ) {
             sub_title = 'Overdue'
         }
         else { 

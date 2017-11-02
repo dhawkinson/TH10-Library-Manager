@@ -5,4 +5,3 @@ if pgCount > 1
         while page <= pgCount
             li
                 a.button(href=`/${ entity }?page=${ page }${ search ? `&search=${ search }&title=${ search_title }&author=${ author }&genre=${ genre }&first_published=${ first_published }` : ''}${ filter ? `&filter=${filter}` : ''}`)= page++ 
-        

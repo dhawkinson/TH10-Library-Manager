@@ -8,10 +8,10 @@ const cookieParser  = require('cookie-parser');     //  Parse Cookie header/popu
 const path          = require('path');              //  a core Node module for working with and handling paths
 
 //  define the routes
-const homeRoute     = require('./routes/index');
-const bookRoute     = require('./routes/book');
-const patronRoute   = require('./routes/patron');
-const loanRoute     = require('./routes/loan');
+const home     = require('./routes/index');
+const book     = require('./routes/book');
+const patron   = require('./routes/patron');
+const loan     = require('./routes/loan');
 
 const app           = express();
 
@@ -36,40 +36,27 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 //  File names without extensions are assumed to be filename.js
 
 //  use the routes (API end points)
-app.use('/', homeRoute);            //  route to home page
-app.use('/book', bookRoute);        //  route to books
-app.use('/patron', patronRoute);    //  route to patrons
-app.use('/loan', loanRoute)         //  route to loans of books
+app.use('/', home);            //  route to home page
+app.use('/book', book);        //  route to books
+app.use('/patron', patron);    //  route to patrons
+app.use('/loan', loan)         //  route to loans of books
 
-//  In Express a 404 is not the result of an error but rather the app running out of options. 
-//  Once the request doesn't match any of the routes, it will reach the following function.
-app.use(function(req, res, next) {  
-    var err = new Error('No Route Found');
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
     err.status = 404;
     next(err);
-});
-
-//  Error Handling
-//  First -- in the Development environment only -- show the stack trace
-/*if (app.get('env') === 'development') {  
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
-
-//  Error Handling (continued)
-//  Next -- in all environments -- show the error message.
-app.use(function(err, req, res, next) {  
+  });
+  
+  // error handler
+  app.use(function(err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+  
+    // render the error page
     res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
-});*/
+    res.render('error');
+  });
 
 module.exports = app;
-
