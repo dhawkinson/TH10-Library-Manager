@@ -49,7 +49,12 @@ module.exports = function(sequelize, DataTypes) {
         },
         returned_on: {
             type: DataTypes.DATEONLY,
-            allowNull: true
+            allowNull: true,
+            validate: {
+                isDate: {
+                    msg: 'Returned On Date must be in the correct format. ex. YYYY-MM-DD'
+                }
+            }
         }
     });
     Loan.associate = function(models) {

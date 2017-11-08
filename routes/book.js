@@ -325,21 +325,20 @@ router.post('/:id/return', (req, res, next) => {
         }]
     }).then(loan => {
 
-        const dateMatch = /^\d{4}-\d{2}-\d{2}$/igm;
-
         const loanedBook = loan.get({
             plain: true
         });
 
         const title = `Return ${ loanedBook.Book.title }`;
         const errors = [];
+        
+        //===================================================
+        //  date check -- see https://stackoverflow.com/questions/17433472/date-validation-in-nodejs
+        //===================================================
+        /*if ( !req.body.returned_on || !moment(req.body.returned_on, "YYYY-MM-DD").isValid() ) {
+            errors.push(new Error('The Returned On date is required and must be a valid date, in the format YYYY-MM-DD'));
+        };*/
 
-        // if you try to save a return with no return date
-        if (!req.body.returned_on) {
-            errors.push(new Error('Return date cannot be empty'));
-        } else if (!dateMatch.test(req.body.returned_on)) {
-            errors.push(new Error('You must enter a valid date. ex. 2017-07-08'));
-        }
         //  update the return (no errors) and goto loan uri OR retry the return
         if ( errors.length === 0 ) {
             loan.update({
@@ -354,6 +353,27 @@ router.post('/:id/return', (req, res, next) => {
                 today, 
                 errors 
             });
+        }
+    }).catch(error => {
+        // if the error is a validation error - retry
+        debugger;
+        console.log(error.name);
+        if (error.name === "SequelizeValidationError" || error.name === "SequelizeUniqueConstraintError") {
+            bookDetail = false;
+            const loan = Book.build(req.body);
+            const loanedBook = loan.get({
+                plain: true
+            });
+            const errors = error.errors;
+            res.render('return', { 
+                title, 
+                loanedBook, 
+                today, 
+                errors 
+            });
+        }
+        else {
+            res.status(500).send(error);
         }
     });
 });

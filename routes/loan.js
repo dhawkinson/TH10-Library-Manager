@@ -6,7 +6,8 @@ const express       = require('express');
 const router        = express.Router();
 const moment        = require('moment');
 
-const today         = moment().format('YYYY[-]MM[-]DD');
+//const today         = moment().format('YYYY[-]MM[-]DD');  //  possibly deprecated 
+const today         = moment().format().slice(0,10);    //  may be preferred
 const weekFromToday = moment().add(7, 'days').format('YYYY[-]MM[-]DD');
 
 const Book          = require('../models').Book;
@@ -102,8 +103,6 @@ router.post('/new', (req, res, next) => {
         patrons]
     )
     .then(data => {
-        //const special = /[!@#$%^&*()_+=<>,.'";:`~]+/ig;
-        const dateMatch = /^\d{4}-\d{2}-\d{2}$/igm;
         const errors = [];
         const books = data[0].map(book => {
             return Object.assign({}, {
@@ -119,13 +118,15 @@ router.post('/new', (req, res, next) => {
             });
         });
 
-        /*if (special.test(req.body.loaned_on)) {
-            errors.push(new Error('The loaned on date must be in the correct format. ex. 2017-07-08'));
-        }
-
-        if (special.test(req.body.return_by)) {
-            errors.push(new Error('The return by date must be in the correct format. ex. 2017-07-08'));
-        }*/
+        //===================================================
+        //  date checks -- see https://stackoverflow.com/questions/17433472/date-validation-in-nodejs
+        //===================================================
+        if ( !req.body.loaned_on || !moment(req.body.loaned_on, "YYYY-MM-DD").isValid() ) {
+            errors.push(new Error('The Loaned On date is required and must be a valid date, in the format YYYY-MM-DD'));
+        };
+        if ( !req.body.return_by || !moment(req.body.return_by, "YYYY-MM-DD").isValid() ) {
+            errors.push(new Error('The Return By date is required and must be a valid date, in the format YYYY-MM-DD'));
+        };
 
         if (errors.length) {
             // there are errors so errors are passed
