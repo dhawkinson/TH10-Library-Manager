@@ -4,7 +4,8 @@ const express   = require('express');
 const router    = express.Router();
 const moment    = require('moment');
 
-const today     = moment().format('YYYY[-]MM[-]DD');
+//const today         = moment().format('YYYY[-]MM[-]DD');  //  possibly deprecated 
+const today         = moment().format().slice(0,10);    //  may be preferred
 
 const Book      = require('../models').Book;            //  the Book Model
 const Patron    = require('../models').Patron;          //  the Patron Model
@@ -268,113 +269,64 @@ router.post('/', (req, res, next) => {
 //      executes as a result of cliking on the Return link off of a Book Listing row
 //  =========================================================================
 // use the id to get thr row (book) being returned
-router.get('/:id/return', (req, res, next) => {
+router.get('/:id/return', (req, res) => {
     Loan.findOne({
-        where: {
+        where: [{
             id: req.params.id
-        },
-        include: [{                     // join to
-            model: Book,                // Book
-            attributes: [               // bring back
-                ['title', 'title']      // the book title
-            ]
-        }, {                                    // AND join to
-            model: Patron,                      // Patron
-            attributes: [                       // bring back
-                ['first_name', 'first_name'],   // first_name AND
-                ['last_name', 'last_name']      // last_name
-            ]
+        }],
+        include: [{         // join to
+            model: Book     // Book
+        }, {                // AND join to
+            model: Patron   // Patron
         }]
-    }).then(loan => {
-
-        const loanedBook = loan.get({
-            plain: true
+    }).then((loan) => {
+        res.render('return', { 
+                returned_on: today, 
+                title: 'Return Book', 
+                loan: loan 
         });
-
-        const title = `Return ${ loanedBook.Book.title }`;
-
-        res.render(
-            'return', 
-            { 
-                today, 
-                title, 
-                loanedBook 
-            }
-        );
     });
 });
 
-// POST the book return update
+//  perform the POST to update the routine
 router.post('/:id/return', (req, res, next) => {
-
+    let errors = [];
+    let returned_on =req.body.returned_on;
+    if ( !returned_on || returned_on > today || !moment(returned_on, "YYYY-MM-DD").isValid() ) {
+        errors.push(new Error('Returned On date is required, cannot be greater than today, and must be a valid date, in the format YYYY-MM-DD'));
+    };
     Loan.findOne({
         where: {
             id: req.params.id
         },
         include: [{
             model: Book,
-            attributes: [
-                ['title', 'title']
-            ]
         }, {
             model: Patron,
-            attributes: [
-                ['first_name', 'first_name'],
-                ['last_name', 'last_name']
-            ]
         }]
-    }).then(loan => {
-
-        const loanedBook = loan.get({
-            plain: true
-        });
-
-        const title = `Return ${ loanedBook.Book.title }`;
-        const errors = [];
-        
-        //===================================================
-        //  date check -- see https://stackoverflow.com/questions/17433472/date-validation-in-nodejs
-        //===================================================
-        /*if ( !req.body.returned_on || !moment(req.body.returned_on, "YYYY-MM-DD").isValid() ) {
-            errors.push(new Error('The Returned On date is required and must be a valid date, in the format YYYY-MM-DD'));
-        };*/
-
+    }).then((loan) => {
         //  update the return (no errors) and goto loan uri OR retry the return
         if ( errors.length === 0 ) {
-            loan.update({
-                returned_on: req.body.returned_on
+            Loan.update(req.body, {
+                where: [{
+                    id: req.params.id
+                }]
             }).then(() => {
-                res.redirect('/loan');
-            });
+                res.redirect('/loan?page=1')
+            })
         } else {
-            res.render('return', { 
-                title, 
-                loanedBook, 
-                today, 
+            res.render('return', {
+                returned_on: today, 
+                title: 'Return Book', 
+                loan: loan ,
                 errors 
             });
         }
-    }).catch(error => {
-        // if the error is a validation error - retry
-        debugger;
-        console.log(error.name);
-        if (error.name === "SequelizeValidationError" || error.name === "SequelizeUniqueConstraintError") {
-            bookDetail = false;
-            const loan = Book.build(req.body);
-            const loanedBook = loan.get({
-                plain: true
-            });
-            const errors = error.errors;
-            res.render('return', { 
-                title, 
-                loanedBook, 
-                today, 
-                errors 
-            });
-        }
-        else {
-            res.status(500).send(error);
-        }
+    }).catch((error) => {
+        const errors = error.errors;
+        res.render('error', { 
+            errors 
+        });
     });
 });
 
